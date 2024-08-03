@@ -46,12 +46,14 @@ export function SettingsDrawer({
   const renderHead = (
     <Box display="flex" alignItems="center" sx={{ py: 2, pr: 1, pl: 2.5 }}>
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
-        Settings
+        {/* Settings */}
+        الإعدادات
       </Typography>
 
       <FullScreenButton />
 
-      <Tooltip title="Reset">
+      {/* <Tooltip title="Reset"> */}
+      <Tooltip title="إعادة ضبط">
         <IconButton
           onClick={() => {
             settings.onReset();
@@ -64,7 +66,8 @@ export function SettingsDrawer({
         </IconButton>
       </Tooltip>
 
-      <Tooltip title="Close">
+      {/* <Tooltip title="Close"> */}
+      <Tooltip title="إغلاق">
         <IconButton onClick={settings.onCloseDrawer}>
           <Iconify icon="mingcute:close-line" />
         </IconButton>
@@ -74,7 +77,8 @@ export function SettingsDrawer({
 
   const renderMode = (
     <BaseOption
-      label="Dark mode"
+      // label="Dark mode"
+      label="الوضع القاتم"
       icon="moon"
       selected={settings.colorScheme === 'dark'}
       onClick={() => {
@@ -86,7 +90,8 @@ export function SettingsDrawer({
 
   const renderContrast = (
     <BaseOption
-      label="Contrast"
+      // label="Contrast"
+      label="توازن"
       icon="contrast"
       selected={settings.contrast === 'hight'}
       onClick={() =>
@@ -182,12 +187,12 @@ export function SettingsDrawer({
           <Box gap={2} display="grid" gridTemplateColumns="repeat(2, 1fr)">
             {!hideColorScheme && renderMode}
             {!hideContrast && renderContrast}
-            {!hideDirection && renderRTL}
-            {!hideCompact && renderCompact}
+            {/* {!hideDirection && renderRTL} */}
+            {/* {!hideCompact && renderCompact} */}
           </Box>
           {!(hideNavLayout && hideNavColor) && renderNav}
           {!hidePresets && renderPresets}
-          {!hideFont && renderFont}
+          {/* {!hideFont && renderFont} */}
         </Stack>
       </Scrollbar>
     </Drawer>

@@ -6,17 +6,17 @@ import { styled, useTheme } from '@mui/material/styles';
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
 
-import { Logo } from 'src/components/logo';
+// import { Logo } from 'src/components/logo';
 
 import { HeaderSection } from './header-section';
-import { Searchbar } from '../components/searchbar';
-import { MenuButton } from '../components/menu-button';
+// import { Searchbar } from '../components/searchbar';
+// import { MenuButton } from '../components/menu-button';
 import { SignInButton } from '../components/sign-in-button';
 import { AccountDrawer } from '../components/account-drawer';
 import { SettingsButton } from '../components/settings-button';
-import { LanguagePopover } from '../components/language-popover';
+// import { LanguagePopover } from '../components/language-popover';
 import { ContactsPopover } from '../components/contacts-popover';
-import { WorkspacesPopover } from '../components/workspaces-popover';
+// import { WorkspacesPopover } from '../components/workspaces-popover';
 import { NotificationsDrawer } from '../components/notifications-drawer';
 
 // ----------------------------------------------------------------------
@@ -83,10 +83,10 @@ export function HeaderBase({
         leftAreaStart: slots?.leftAreaStart,
         leftArea: (
           <>
-            {slots?.leftAreaStart}
+            {/* {slots?.leftAreaStart} */}
 
             {/* -- Menu button -- */}
-            {menuButton && (
+            {/* {menuButton && (
               <MenuButton
                 data-slot="menu-button"
                 onClick={onOpenNav}
@@ -96,18 +96,18 @@ export function HeaderBase({
                   [theme.breakpoints.up(layoutQuery)]: { display: 'none' },
                 }}
               />
-            )}
+            )} */}
 
             {/* -- Logo -- */}
-            <Logo data-slot="logo" />
+            {/* <Logo data-slot="logo" /> */}
 
             {/* -- Divider -- */}
-            <StyledDivider data-slot="divider" />
+            {/* <StyledDivider data-slot="divider" /> */}
 
             {/* -- Workspace popover -- */}
-            {workspaces && <WorkspacesPopover data-slot="workspaces" data={data?.workspaces} />}
+            {/* {workspaces && <WorkspacesPopover data-slot="workspaces" data={data?.workspaces} />} */}
 
-            {slots?.leftAreaEnd}
+            {/* {slots?.leftAreaEnd} */}
           </>
         ),
         rightArea: (
@@ -136,10 +136,10 @@ export function HeaderBase({
               )}
 
               {/* -- Searchbar -- */}
-              {searchbar && <Searchbar data-slot="searchbar" data={data?.nav} />}
+              {/* {searchbar && <Searchbar data-slot="searchbar" data={data?.nav} />} */}
 
               {/* -- Language popover -- */}
-              {localization && <LanguagePopover data-slot="localization" data={data?.langs} />}
+              {/* {localization && <LanguagePopover data-slot="localization" data={data?.langs} />} */}
 
               {/* -- Notifications popover -- */}
               {notifications && (

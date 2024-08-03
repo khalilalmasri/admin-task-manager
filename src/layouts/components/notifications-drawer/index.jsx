@@ -54,11 +54,13 @@ export function NotificationsDrawer({ data = [], sx, ...other }) {
   const renderHead = (
     <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
-        Notifications
+        {/* Notifications */}
+        الاشعارات
       </Typography>
 
       {!!totalUnRead && (
-        <Tooltip title="Mark all as read">
+        // <Tooltip title="Mark all as read">
+        <Tooltip title="تحديد الجميع">
           <IconButton color="primary" onClick={handleMarkAllAsRead}>
             <Iconify icon="eva:done-all-fill" />
           </IconButton>
@@ -154,7 +156,8 @@ export function NotificationsDrawer({ data = [], sx, ...other }) {
 
         <Box sx={{ p: 1 }}>
           <Button fullWidth size="large">
-            View all
+            {/* View all */}
+            عرض الكل
           </Button>
         </Box>
       </Drawer>

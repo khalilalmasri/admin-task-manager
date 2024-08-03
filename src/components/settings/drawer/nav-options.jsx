@@ -40,7 +40,8 @@ export function NavOptions({ options, value, onClickOption, hideNavColor, hideNa
   const renderLayout = (
     <div>
       <Box component="span" sx={labelStyles}>
-        Layout
+        {/* Layout */}
+        الشريط الجانبي
       </Box>
       <Box gap={1.5} display="flex" sx={{ mt: 1.5 }}>
         {options.layouts.map((option) => (
@@ -55,28 +56,29 @@ export function NavOptions({ options, value, onClickOption, hideNavColor, hideNa
     </div>
   );
 
-  const renderColor = (
-    <div>
-      <Box component="span" sx={labelStyles}>
-        Color
-      </Box>
-      <Box gap={1.5} display="flex" sx={{ mt: 1.5 }}>
-        {options.colors.map((option) => (
-          <ColorOption
-            key={option}
-            option={option}
-            selected={value.color === option}
-            onClick={() => onClickOption.color(option)}
-          />
-        ))}
-      </Box>
-    </div>
-  );
+  // const renderColor = (
+  //   <div>
+  //     <Box component="span" sx={labelStyles}>
+  //       Color
+  //     </Box>
+  //     <Box gap={1.5} display="flex" sx={{ mt: 1.5 }}>
+  //       {options.colors.map((option) => (
+  //         <ColorOption
+  //           key={option}
+  //           option={option}
+  //           selected={value.color === option}
+  //           onClick={() => onClickOption.color(option)}
+  //         />
+  //       ))}
+  //     </Box>
+  //   </div>
+  // );
 
   return (
-    <Block title="Nav" tooltip="Dashboard only" sx={{ ...cssVars, gap: 2.5 }}>
+    // <Block title="Nav" tooltip="Dashboard only" sx={{ ...cssVars, gap: 2.5 }}>
+    <Block title="الشريط الجانبي الرئيسي" sx={{ ...cssVars, gap: 2.5 }}>
       {!hideNavLayout && renderLayout}
-      {!hideNavColor && renderColor}
+      {/* {!hideNavColor && renderColor} */}
     </Block>
   );
 }
@@ -119,19 +121,19 @@ export function LayoutOption({ option, selected, sx, ...other }) {
       />
     );
 
-    const secondaryItem = (
-      <Box
-        sx={{
-          ...baseStyles,
-          width: 1,
-          height: 4,
-          maxWidth: 14,
-          opacity: 0.24,
-          ...(option === 'horizontal' && { maxWidth: 10 }),
-          ...(selected && { background: 'var(--item-active-color)' }),
-        }}
-      />
-    );
+    // const secondaryItem = (
+    //   <Box
+    //     sx={{
+    //       ...baseStyles,
+    //       width: 1,
+    //       height: 4,
+    //       maxWidth: 14,
+    //       opacity: 0.24,
+    //       ...(option === 'horizontal' && { maxWidth: 10 }),
+    //       ...(selected && { background: 'var(--item-active-color)' }),
+    //     }}
+    //   />
+    // );
 
     return (
       <Stack
@@ -161,7 +163,7 @@ export function LayoutOption({ option, selected, sx, ...other }) {
       >
         {circle}
         {primaryItem}
-        {secondaryItem}
+        {/* {secondaryItem} */}
       </Stack>
     );
   };

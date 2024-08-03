@@ -11,7 +11,8 @@ import { SvgColor } from '../../svg-color';
 
 export function PresetsOptions({ value, options, onClickOption }) {
   return (
-    <Block title="Presets">
+    // <Block title="Presets">
+    <Block title="تنسيق الألوان">
       <Box component="ul" gap={1.5} display="grid" gridTemplateColumns="repeat(3, 1fr)">
         {options.map((option) => {
           const selected = value === option.name;
