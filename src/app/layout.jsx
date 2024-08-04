@@ -35,15 +35,16 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   themeColor: primary.main,
+  
 };
 
 export default async function RootLayout({ children }) {
-  const lang = CONFIG.isStaticExport ? 'en' : await detectLanguage();
+  const lang = CONFIG.isStaticExport ? 'ar' : await detectLanguage();
 
   const settings = CONFIG.isStaticExport ? defaultSettings : await detectSettings();
 
   return (
-    <html lang={lang ?? 'en'} suppressHydrationWarning>
+    <html lang={lang ?? 'ar'} suppressHydrationWarning>
       <body>
         {getInitColorSchemeScript}
 

@@ -69,7 +69,8 @@ export function KanbanView() {
   const columnIds = board.columns.map((column) => column.id);
 
   const isSortingContainer = activeId ? columnIds.includes(activeId) : false;
-
+  // const { t } = useTranslate('common');
+  // const { t } = useTranslation();
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
     useSensor(TouchSensor, { activationConstraint: { distance: 5 } }),
@@ -353,6 +354,7 @@ export function KanbanView() {
         justifyContent="space-between"
         sx={{ pr: { sm: 3 }, mb: { xs: 3, md: 5 } }}
       >
+        {/* <Typography variant="h4">{t('Kanban')} 0</Typography> */}
         <Typography variant="h4">Kanban</Typography>
 
         <FormControlLabel

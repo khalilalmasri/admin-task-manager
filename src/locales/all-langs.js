@@ -27,6 +27,16 @@ import {
 
 export const allLangs = [
   {
+    value: 'ar',
+    label: 'Arabic',
+    countryCode: 'SA',
+    adapterLocale: 'ar-sa',
+    numberFormat: { code: 'ar', currency: 'AED' },
+    systemValue: {
+      components: { ...arSACore.components, ...arSDDataGrid.components },
+    },
+  },
+  {
     value: 'en',
     label: 'English',
     countryCode: 'GB',
@@ -64,16 +74,6 @@ export const allLangs = [
     numberFormat: { code: 'zh-CN', currency: 'CNY' },
     systemValue: {
       components: { ...zhCNCore.components, ...zhCNDate.components, ...zhCNDataGrid.components },
-    },
-  },
-  {
-    value: 'ar',
-    label: 'Arabic',
-    countryCode: 'SA',
-    adapterLocale: 'ar-sa',
-    numberFormat: { code: 'ar', currency: 'AED' },
-    systemValue: {
-      components: { ...arSACore.components, ...arSDDataGrid.components },
     },
   },
 ];

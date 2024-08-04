@@ -20,7 +20,8 @@ export function ThemeProvider({ children }) {
   const settings = useSettingsContext();
 
   const theme = createTheme(currentLang?.systemValue, settings);
-
+  // console.log('currentLang', currentLang);
+  // console.log('settings', settings);
   return (
     <AppRouterCacheProvider options={{ key: 'css' }}>
       <CssVarsProvider

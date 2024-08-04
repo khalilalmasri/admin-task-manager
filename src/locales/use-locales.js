@@ -14,9 +14,11 @@ import { fallbackLng, changeLangMessages as messages } from './config-locales';
 // ----------------------------------------------------------------------
 
 export function useTranslate(ns) {
+// export function useTranslate() {
   const router = useRouter();
 
   const { t, i18n } = useTranslation(ns);
+  // const { t, i18n } = useTranslation();
 
   const fallback = allLangs.filter((lang) => lang.value === fallbackLng)[0];
 
