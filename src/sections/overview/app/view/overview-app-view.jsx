@@ -1,28 +1,20 @@
 'use client';
 
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2';
 
+import { paths } from 'src/routes/paths';
+
 import { DashboardContent } from 'src/layouts/dashboard';
 import { SeoIllustration } from 'src/assets/illustrations';
-import { _appAuthors, _appRelated, _appFeatured, _appInvoices, _appInstalled } from 'src/_mock';
-
-import { svgColorClasses } from 'src/components/svg-color';
 
 import { useMockedUser } from 'src/auth/hooks';
 
-import { AppWidget } from '../app-widget';
 import { AppWelcome } from '../app-welcome';
-import { AppFeatured } from '../app-featured';
-import { AppNewInvoice } from '../app-new-invoice';
-import { AppTopAuthors } from '../app-top-authors';
-import { AppTopRelated } from '../app-top-related';
-import { AppAreaInstalled } from '../app-area-installed';
 import { AppWidgetSummary } from '../app-widget-summary';
 import { AppCurrentDownload } from '../app-current-download';
-import { AppTopInstalledCountries } from '../app-top-installed-countries';
+import { AnalyticsConversionRates } from '../../analytics/analytics-conversion-rates';
 
 // ----------------------------------------------------------------------
 
@@ -34,28 +26,101 @@ export function OverviewAppView() {
   return (
     <DashboardContent maxWidth="xl">
       <Grid container spacing={3}>
-        <Grid xs={12} md={8}>
+        <Grid xs={12} md={12}>
           <AppWelcome
-            title={`Welcome back 👋 \n ${user?.displayName}`}
-            description="If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything."
+            // title={`أهلاً بعودتك  👋 \n ${user?.displayName}`}
+            title={`أهلاً بعودتك  👋 \n Admin`}
+            description="برنامج إدارة المهام المتكامل لمتابعة و ضبط الدوام والمهام"
             img={<SeoIllustration hideBackground />}
             action={
-              <Button variant="contained" color="primary">
-                Go now
+              <Button href={paths.dashboard.kanban} variant="contained" color="primary">
+                الذهاب إلى قسم المهام
               </Button>
             }
           />
         </Grid>
 
-        <Grid xs={12} md={4}>
+        {/* <Grid xs={12} md={4}>
           <AppFeatured list={_appFeatured} />
+        </Grid> */}
+
+        <Grid xs={12} md={12} lg={12} margin={1}>
+          <h2>نموذج جدول الدوام</h2>
+        </Grid>
+        <Grid xs={2} md={2} lg={2}>
+          <AnalyticsConversionRates
+            title="يوم السبت"
+            chart={{
+              categories: ['', '', '', '', ''],
+              series: [{ name: 'السبت', data: [6, 5, 6, 6, 4] }],
+            }}
+          />
+        </Grid>
+        <Grid xs={2} md={2} lg={2}>
+          <AnalyticsConversionRates
+            title="يوم الأحد"
+            chart={{
+              categories: ['', '', '', '', ''],
+              series: [{ name: 'الأحد', data: [5, 6, 2, 4, 6] }],
+            }}
+          />
+        </Grid>
+        <Grid xs={2} md={2} lg={2}>
+          <AnalyticsConversionRates
+            title="يوم الاثنين"
+            chart={{
+              categories: ['', '', '', '', ''],
+              series: [{ name: 'الاثنين', data: [6, 7, 6, 2, 1] }],
+            }}
+          />
+        </Grid>
+        <Grid xs={2} md={2} lg={2}>
+          <AnalyticsConversionRates
+            title="يوم الثلاثاء"
+            chart={{
+              categories: ['', '', '', '', ''],
+              series: [{ name: 'الثلاثاء', data: [6, 8, 2, 6, 1] }],
+            }}
+          />
+        </Grid>
+        <Grid xs={2} md={2} lg={2}>
+          <AnalyticsConversionRates
+            title="يوم الأربعاء"
+            chart={{
+              categories: ['', '', '', '', ''],
+              series: [{ name: 'الأربعاء', data: [6, 1, 6, 8, 6] }],
+            }}
+          />
+        </Grid>
+        <Grid xs={2} md={2} lg={2}>
+          <AnalyticsConversionRates
+            title="يوم الخميس"
+            chart={{
+              categories: ['طلال', 'أحمد', 'سعيد', 'خالد', 'محمد'],
+              series: [{ name: 'الخميس', data: [6, 4, 6, 2, 3] }],
+            }}
+          />
+        </Grid>
+        <Grid xs={12} md={3} lg={3}>
+          <AppCurrentDownload
+            title="المهام"
+            subheader="بحسب الانجاز"
+            chart={{
+              series: [
+                { label: 'المهام المنفذة', value: 3 },
+                { label: 'مهام قيد التنفيذ', value: 6 },
+                { label: 'مهام معلقة', value: 4 },
+                { label: 'مهام ملغاة', value: 1 },
+              ],
+            }}
+          />
         </Grid>
 
-        <Grid xs={12} md={4}>
+        <Grid xs={12} md={3}>
           <AppWidgetSummary
-            title="Total active users"
+            title="عدد الموظفين"
             percent={2.6}
-            total={18765}
+            total={1500}
             chart={{
               categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
               series: [15, 18, 12, 51, 68, 11, 39, 37],
@@ -63,11 +128,11 @@ export function OverviewAppView() {
           />
         </Grid>
 
-        <Grid xs={12} md={4}>
+        <Grid xs={12} md={3}>
           <AppWidgetSummary
-            title="Total installed"
+            title="عدد الشركات"
             percent={0.2}
-            total={4876}
+            total={20}
             chart={{
               colors: [theme.vars.palette.info.main],
               categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
@@ -76,9 +141,9 @@ export function OverviewAppView() {
           />
         </Grid>
 
-        <Grid xs={12} md={4}>
+        <Grid xs={12} md={3}>
           <AppWidgetSummary
-            title="Total downloads"
+            title="عدد المهام المنفذة"
             percent={-0.1}
             total={678}
             chart={{
@@ -88,23 +153,7 @@ export function OverviewAppView() {
             }}
           />
         </Grid>
-
-        <Grid xs={12} md={6} lg={4}>
-          <AppCurrentDownload
-            title="Current download"
-            subheader="Downloaded by operating system"
-            chart={{
-              series: [
-                { label: 'Mac', value: 12244 },
-                { label: 'Window', value: 53345 },
-                { label: 'iOS', value: 44313 },
-                { label: 'Android', value: 78343 },
-              ],
-            }}
-          />
-        </Grid>
-
-        <Grid xs={12} md={6} lg={8}>
+        {/* <Grid xs={12} md={6} lg={8}>
           <AppAreaInstalled
             title="Area installed"
             subheader="(+43%) than last year"
@@ -153,7 +202,7 @@ export function OverviewAppView() {
           />
         </Grid>
 
-        <Grid xs={12} lg={8}>
+         <Grid xs={12} lg={8}>
           <AppNewInvoice
             title="New invoice"
             tableData={_appInvoices}
@@ -175,11 +224,11 @@ export function OverviewAppView() {
           <AppTopInstalledCountries title="Top installed countries" list={_appInstalled} />
         </Grid>
 
-        <Grid xs={12} md={6} lg={4}>
+         <Grid xs={12} md={6} lg={4}>
           <AppTopAuthors title="Top authors" list={_appAuthors} />
         </Grid>
 
-        <Grid xs={12} md={6} lg={4}>
+         <Grid xs={12} md={6} lg={4}>
           <Box sx={{ gap: 3, display: 'flex', flexDirection: 'column' }}>
             <AppWidget
               title="Conversion"
@@ -188,7 +237,7 @@ export function OverviewAppView() {
               chart={{ series: 48 }}
             />
 
-            <AppWidget
+             <AppWidget
               title="Applications"
               total={55566}
               icon="fluent:mail-24-filled"
@@ -198,8 +247,8 @@ export function OverviewAppView() {
               }}
               sx={{ bgcolor: 'info.dark', [`& .${svgColorClasses.root}`]: { color: 'info.light' } }}
             />
-          </Box>
-        </Grid>
+           </Box>
+         </Grid> */}
       </Grid>
     </DashboardContent>
   );

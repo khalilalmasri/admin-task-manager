@@ -28,6 +28,9 @@ export function AppWidgetSummary({ title, percent, total, chart, sx, ...other })
 
   const renderTrending = (
     <Box sx={{ gap: 0.5, display: 'flex', alignItems: 'center' }}>
+      <Box component="span" sx={{ typography: 'body2', color: 'text.secondary' }}>
+        آخر 7 أيام
+      </Box>
       <Iconify
         width={24}
         icon={
@@ -41,9 +44,6 @@ export function AppWidgetSummary({ title, percent, total, chart, sx, ...other })
       <Box component="span" sx={{ typography: 'subtitle2' }}>
         {percent > 0 && '+'}
         {fPercent(percent)}
-      </Box>
-      <Box component="span" sx={{ typography: 'body2', color: 'text.secondary' }}>
-        last 7 days
       </Box>
     </Box>
   );

@@ -26,7 +26,9 @@ import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
+import { useTranslate } from 'src/locales';
 import { hideScrollY } from 'src/theme/styles';
+import { useGetCompanys } from 'src/actions/company';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { moveTask, moveColumn, useGetBoard } from 'src/actions/kanban';
 
@@ -69,14 +71,14 @@ export function KanbanView() {
   const columnIds = board.columns.map((column) => column.id);
 
   const isSortingContainer = activeId ? columnIds.includes(activeId) : false;
-  // const { t } = useTranslate('common');
-  // const { t } = useTranslation();
+
+  const { t } = useTranslate();
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
     useSensor(TouchSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter })
   );
-
+  
   const collisionDetectionStrategy = useCallback(
     (args) => {
       if (activeId && activeId in board.tasks) {
@@ -354,8 +356,8 @@ export function KanbanView() {
         justifyContent="space-between"
         sx={{ pr: { sm: 3 }, mb: { xs: 3, md: 5 } }}
       >
-        {/* <Typography variant="h4">{t('Kanban')} 0</Typography> */}
-        <Typography variant="h4">Kanban</Typography>
+        <Typography variant="h4">{t('Kanban')} </Typography>
+        {/* <Typography variant="h4">Kanban</Typography> */}
 
         <FormControlLabel
           label="Column fixed"

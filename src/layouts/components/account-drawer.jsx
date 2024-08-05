@@ -104,15 +104,16 @@ export function AccountDrawer({ data = [], sx, ...other }) {
             {renderAvatar}
 
             <Typography variant="subtitle1" noWrap sx={{ mt: 2 }}>
-              {user?.displayName}
+              {/* {user?.displayName} */}
+              Admin
             </Typography>
 
             <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }} noWrap>
-              {user?.email}
-            </Typography>
+              email@email.com
+            </Typography> 
           </Stack>
 
-          <Stack direction="row" spacing={1} flexWrap="wrap" justifyContent="center" sx={{ p: 3 }}>
+          {/* <Stack direction="row" spacing={1} flexWrap="wrap" justifyContent="center" sx={{ p: 3 }}>
             {[...Array(3)].map((_, index) => (
               <Tooltip
                 key={_mock.fullName(index + 1)}
@@ -136,7 +137,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
                 <Iconify icon="mingcute:add-line" />
               </IconButton>
             </Tooltip>
-          </Stack>
+          </Stack> */}
 
           <Stack
             sx={{
@@ -179,7 +180,7 @@ export function AccountDrawer({ data = [], sx, ...other }) {
           </Stack>
 
           <Box sx={{ px: 2.5, py: 3 }}>
-            <UpgradeBlock />
+            {/* <UpgradeBlock /> */}
           </Box>
         </Scrollbar>
 

@@ -18,7 +18,7 @@ export function Section({
   methods,
   title = 'Manage the job',
   imgUrl = `${CONFIG.site.basePath}/assets/illustrations/illustration-dashboard.webp`,
-  subtitle = 'More effectively with optimized workflows.',
+  subtitle = 'تقدم الحل الأمثل لسير العمل بأعلى مستويات التقانة والتحليل ',
   ...other
 }) {
   const theme = useTheme();
@@ -94,12 +94,12 @@ export function Section({
                       ...(!selected && { pointerEvents: 'none' }),
                     }}
                   >
-                    <Box
+                    {/* <Box
                       component="img"
                       alt={option.label}
                       src={option.icon}
                       sx={{ width: 32, height: 32 }}
-                    />
+                    /> */}
                   </Link>
                 </Tooltip>
               </Box>

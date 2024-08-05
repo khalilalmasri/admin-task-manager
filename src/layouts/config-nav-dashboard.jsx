@@ -6,7 +6,6 @@ import { CONFIG } from 'src/config-global';
 
 import { SvgColor } from 'src/components/svg-color';
 
-
 // ----------------------------------------------------------------------
 
 const icon = (name) => <SvgColor src={`${CONFIG.site.basePath}/assets/icons/navbar/${name}.svg`} />;
@@ -42,10 +41,9 @@ const ICONS = {
 
 // ----------------------------------------------------------------------
 // export function useNavData() {
-  // const data = useMemo(
-    // () =>
-export const navData =
- [
+// const data = useMemo(
+// () =>
+export const navData = [
   /**
    * Overview
    */
@@ -53,28 +51,33 @@ export const navData =
     // subheader: 'Overview',
     items: [
       { title: 'لوحة التحكم', path: paths.dashboard.root, icon: ICONS.dashboard },
-      { title: 'المشاريع', path: paths.dashboard.general.analytics, icon: ICONS.analytics },
-      // { title: 'الشركات', path: paths.dashboard.company, icon: ICONS.analytics },
+      {
+        title: 'المشاريع',
+        path: paths.dashboard.general.analytics,
+        icon: ICONS.analytics,
+        disabled: true,
+      },
+      { title: 'الشركات', path: paths.dashboard.company.list, icon: ICONS.job },
       { title: 'المهام', path: paths.dashboard.kanban, icon: ICONS.course },
       { title: 'التقويم', path: paths.dashboard.calendar, icon: ICONS.file },
       // { title: 'Course', path: paths.dashboard.general.course, icon: ICONS.course },
     ],
   },
-  {
-    // subheader: 'Management',
-    items: [
-      {
-        title: 'الشركات',
-        path: paths.dashboard.company.root,
-        icon: ICONS.job,
-        children: [
-          { title: 'قائمة الشركات', path: paths.dashboard.company.list },
-          { title: 'إضافة شركة', path: paths.dashboard.company.new },
-          { title: 'تعديل شركة', path: paths.dashboard.company.demo.edit },
-        ],
-      },
-    ],
-  },
+  // {
+  //   // subheader: 'Management',
+  //   items: [
+  //     {
+  //       title: 'الشركات',
+  //       path: paths.dashboard.company.cards,
+  //       icon: ICONS.job,
+  //       children: [
+  //         { title: 'قائمة الشركات', path: paths.dashboard.company.list },
+  //         { title: 'إضافة شركة', path: paths.dashboard.company.new },
+  //         { title: 'تعديل شركة', path: paths.dashboard.company.demo.edit },
+  //       ],
+  //     },
+  //   ],
+  // },
 
   /**
    * Management
@@ -86,9 +89,10 @@ export const navData =
         title: 'المستخدمين',
         path: paths.dashboard.user.root,
         icon: ICONS.user,
+        disabled: true,
         children: [
-          { title: 'Profile', path: paths.dashboard.user.root },
-          { title: 'Cards', path: paths.dashboard.user.cards },
+          // { title: 'Profile', path: paths.dashboard.user.root },
+          // { title: 'Cards', path: paths.dashboard.user.cards },
           { title: 'List', path: paths.dashboard.user.list },
           { title: 'Create', path: paths.dashboard.user.new },
           { title: 'Edit', path: paths.dashboard.user.demo.edit },
@@ -268,7 +272,7 @@ export const navData =
   //     // { title: 'Blank', path: paths.dashboard.blank, icon: ICONS.blank },
   //   ],
   // },
-]
+];
 //  );
 
 // return data;
