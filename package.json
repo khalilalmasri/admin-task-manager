@@ -26,6 +26,7 @@
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@fontsource/alexandria": "^5.0.13",
     "@fontsource/barlow": "^5.0.13",
     "@fontsource/dm-sans": "^5.0.21",
     "@fontsource/inter": "^5.0.18",

@@ -47,7 +47,7 @@ export function OverviewAppView() {
         <Grid xs={12} md={12} lg={12} margin={1}>
           <h2>نموذج جدول الدوام</h2>
         </Grid>
-        <Grid xs={2} md={2} lg={2}>
+        <Grid xs={6} md={3} lg={2}>
           <AnalyticsConversionRates
             title="يوم السبت"
             chart={{
@@ -56,7 +56,7 @@ export function OverviewAppView() {
             }}
           />
         </Grid>
-        <Grid xs={2} md={2} lg={2}>
+        <Grid xs={6} md={3} lg={2}>
           <AnalyticsConversionRates
             title="يوم الأحد"
             chart={{
@@ -65,7 +65,7 @@ export function OverviewAppView() {
             }}
           />
         </Grid>
-        <Grid xs={2} md={2} lg={2}>
+        <Grid xs={6} md={3} lg={2}>
           <AnalyticsConversionRates
             title="يوم الاثنين"
             chart={{
@@ -74,7 +74,7 @@ export function OverviewAppView() {
             }}
           />
         </Grid>
-        <Grid xs={2} md={2} lg={2}>
+        <Grid xs={6} md={3} lg={2}>
           <AnalyticsConversionRates
             title="يوم الثلاثاء"
             chart={{
@@ -83,7 +83,7 @@ export function OverviewAppView() {
             }}
           />
         </Grid>
-        <Grid xs={2} md={2} lg={2}>
+        <Grid xs={6} md={3} lg={2}>
           <AnalyticsConversionRates
             title="يوم الأربعاء"
             chart={{
@@ -92,7 +92,7 @@ export function OverviewAppView() {
             }}
           />
         </Grid>
-        <Grid xs={2} md={2} lg={2}>
+        <Grid xs={6} md={3} lg={2}>
           <AnalyticsConversionRates
             title="يوم الخميس"
             chart={{
@@ -101,7 +101,7 @@ export function OverviewAppView() {
             }}
           />
         </Grid>
-        <Grid xs={12} md={3} lg={3}>
+        <Grid xs={12} md={6} lg={3}>
           <AppCurrentDownload
             title="المهام"
             subheader="بحسب الانجاز"

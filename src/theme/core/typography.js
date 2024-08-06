@@ -2,9 +2,11 @@ import { setFont, pxToRem, responsiveFontSizes } from '../styles/utils';
 
 // ----------------------------------------------------------------------
 
-export const defaultFont = 'Public Sans';
+export const defaultFont = 'Alexandria';
+// export const defaultFont = 'Public Sans';
 
 export const primaryFont = setFont(defaultFont);
+// export const primaryFont = setFont('Alexandria');
 
 export const secondaryFont = setFont('Barlow');
 
@@ -22,14 +24,16 @@ export const typography = {
     fontWeight: 800,
     lineHeight: 80 / 64,
     fontSize: pxToRem(40),
-    fontFamily: secondaryFont,
+    // fontFamily: secondaryFont,
+    fontFamily: primaryFont,
     ...responsiveFontSizes({ sm: 52, md: 58, lg: 64 }),
   },
   h2: {
     fontWeight: 800,
     lineHeight: 64 / 48,
     fontSize: pxToRem(32),
-    fontFamily: secondaryFont,
+    // fontFamily: secondaryFont,
+    fontFamily: primaryFont,
     ...responsiveFontSizes({ sm: 40, md: 44, lg: 48 }),
   },
   h3: {

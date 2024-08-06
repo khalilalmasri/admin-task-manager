@@ -1,23 +1,16 @@
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Button from '@mui/material/Button';
 import { styled, useTheme } from '@mui/material/styles';
-
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
 
 // import { Logo } from 'src/components/logo';
 
 import { HeaderSection } from './header-section';
 // import { Searchbar } from '../components/searchbar';
-// import { MenuButton } from '../components/menu-button';
+import { MenuButton } from '../components/menu-button';
 import { SignInButton } from '../components/sign-in-button';
 import { AccountDrawer } from '../components/account-drawer';
 import { SettingsButton } from '../components/settings-button';
 // import { LanguagePopover } from '../components/language-popover';
-import { ContactsPopover } from '../components/contacts-popover';
 // import { WorkspacesPopover } from '../components/workspaces-popover';
-import { NotificationsDrawer } from '../components/notifications-drawer';
 
 // ----------------------------------------------------------------------
 
@@ -61,7 +54,7 @@ export function HeaderBase({
     account = true,
     helpLink = true,
     settings = true,
-    purchase = true,
+    purchase = false,
     contacts = true,
     searchbar = true,
     workspaces = true,
@@ -86,7 +79,7 @@ export function HeaderBase({
             {/* {slots?.leftAreaStart} */}
 
             {/* -- Menu button -- */}
-            {/* {menuButton && (
+            {menuButton && (
               <MenuButton
                 data-slot="menu-button"
                 onClick={onOpenNav}
@@ -96,7 +89,7 @@ export function HeaderBase({
                   [theme.breakpoints.up(layoutQuery)]: { display: 'none' },
                 }}
               />
-            )} */}
+            )}
 
             {/* -- Logo -- */}
             {/* <Logo data-slot="logo" /> */}
@@ -107,7 +100,7 @@ export function HeaderBase({
             {/* -- Workspace popover -- */}
             {/* {workspaces && <WorkspacesPopover data-slot="workspaces" data={data?.workspaces} />} */}
 
-            {/* {slots?.leftAreaEnd} */}
+            {slots?.leftAreaEnd}
           </>
         ),
         rightArea: (
@@ -159,7 +152,7 @@ export function HeaderBase({
               {signIn && <SignInButton />}
 
               {/* -- Purchase button -- */}
-              {purchase && (
+              {/* {purchase && (
                 <Button
                   data-slot="purchase"
                   variant="contained"
@@ -175,7 +168,7 @@ export function HeaderBase({
                 >
                   Purchase
                 </Button>
-              )}
+              )} */}
             </Box>
 
             {slots?.rightAreaEnd}

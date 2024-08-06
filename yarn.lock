@@ -2286,6 +2286,11 @@
   resolved "https://registry.npmjs.org/@floating-ui/utils/-/utils-0.2.1.tgz"
   integrity sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==
 
+"@fontsource/alexandria@^5.0.13":
+  version "5.0.13"
+  resolved "https://registry.npmjs.org/@fontsource/alexandria/-/alexandria-5.0.13.tgz"
+  integrity sha512-MfkPF0GFL9ZHVwmovNVHxQBGAVDARPvFknjXCHWlfUBGPgnhozH/Dmi6Qxp2glhGS5rzl7OcJ7L10PT7kZcIvQ==
+
 "@fontsource/barlow@^5.0.13":
   version "5.0.13"
   resolved "https://registry.npmjs.org/@fontsource/barlow/-/barlow-5.0.13.tgz"
