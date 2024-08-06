@@ -6,7 +6,7 @@ import { DashboardContent } from 'src/layouts/dashboard';
 
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 
-import { UserNewEditForm } from 'src/sections/user/user-new-edit-form';
+// import { UserNewEditForm } from 'src/sections/user/user-new-edit-form';
 import { CompanyNewEditForm } from '../company-new-edit-form';
 
 // ----------------------------------------------------------------------
@@ -18,7 +18,7 @@ export function CompanyCreateView() {
         heading="إضافة شركة جديدة"
         links={[
           { name: 'لوحة التحكم', href: paths.dashboard.root },
-          { name: 'الشركات', href: paths.dashboard.company.root },
+          { name: 'الشركات', href: paths.dashboard.company.list },
           { name: 'إضافة شركة' },
         ]}
         sx={{ mb: { xs: 3, md: 5 } }}

@@ -75,3 +75,17 @@ export function useSearchcompany(query) {
 
   return memoizedValue;
 }
+
+export function useShowCompany(id) {
+  const URL = `${endpoints.company.details}/${id}`;
+
+  const { data, isLoading, error, isValidating } = useSWR(URL, fetcher);
+  const memoizedValue = {
+    company: data?.data,
+    companyLoading: isLoading,
+    companyError: error,
+    companyValidating: isValidating,
+  };
+
+  return memoizedValue;
+}

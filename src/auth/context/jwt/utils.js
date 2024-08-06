@@ -119,19 +119,23 @@ export function isValidSession(token) {
 }
 
 export function refreshSession() {
-  setTimeout(async () => {
-    try {
-      await axios.get('/api/refresh'); // استبدل هذا بنقطة النهاية الصحيحة للتحديث
-    } catch (error) {
-      console.error('Error refreshing session:', error);
-      sessionStorage.removeItem(STORAGE_KEY);
-      window.location.href = paths.auth.login;
-    }
-  }, 15 * 60 * 1000); // تحديث كل 15 دقيقة، يمكنك تعديل هذه القيمة
+  setTimeout(
+    async () => {
+      try {
+        await axios.get('/api/refresh'); // استبدل هذا بنقطة النهاية الصحيحة للتحديث
+      } catch (error) {
+        console.error('Error refreshing session:', error);
+        sessionStorage.removeItem(STORAGE_KEY);
+        window.location.href = paths.auth.login;
+      }
+    },
+    15 * 60 * 1000
+  ); // تحديث كل 15 دقيقة، يمكنك تعديل هذه القيمة
 }
 
 export async function setSession(token) {
   try {
+    console.log('async function setSession(token)', token);
     if (token) {
       sessionStorage.setItem(STORAGE_KEY, token);
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;

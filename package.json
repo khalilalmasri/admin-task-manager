@@ -5,8 +5,8 @@
   "description": "Next & JavaScript",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3032",
-    "start": "next start -p 3032",
+    "dev": "next dev -p 3035",
+    "start": "next start -p 3035",
     "build": "next build",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
@@ -16,7 +16,7 @@
     "re:start": "yarn rm:all && yarn install && yarn dev",
     "re:build": "yarn rm:all && yarn install && yarn build",
     "re:build-npm": "npm run rm:all && npm install && npm run build",
-    "start:out": "npx serve@latest out -p 3032"
+    "start:out": "npx serve@latest out -p 3035"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",

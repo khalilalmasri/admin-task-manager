@@ -19,6 +19,8 @@ import { RouterLink } from 'src/routes/components';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
+import axios, { endpoints } from 'src/utils/axios';
+
 import { varAlpha } from 'src/theme/styles';
 import { useGetCompanys } from 'src/actions/company';
 import { DashboardContent } from 'src/layouts/dashboard';
@@ -69,17 +71,13 @@ export function CompanyListView() {
   const confirm = useBoolean();
 
   const [tableData, setTableData] = useState(_userList);
-  const [tableDatarr, setTableDatarr] = useState();
   const filters = useSetState({ name: '', role: [], status: 'all' });
   const { companys, companysEmpty, companysLoading } = useGetCompanys();
-  // console.log('0000000000000', useGetCompanys());
-  // console.log('000000companys0000000', companys);
   useEffect(() => {
     if (!companysEmpty || !companysLoading || companys) {
       setTableData(companys);
-      console.log('tableDatarr', tableDatarr);
     }
-  }, [companysEmpty, companys, tableDatarr, companysLoading]);
+  }, [companysEmpty, companys, companysLoading]);
   const dataFiltered = applyFilter({
     inputData: tableData,
     comparator: getComparator(table.order, table.orderBy),
@@ -93,19 +91,40 @@ export function CompanyListView() {
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
+  // const handleDeleteRow = useCallback(
+  //   (id) => {
+  //     const deleteRow = tableData.filter((row) => row.id !== id);
+
+  //     toast.success('Delete success!');
+
+  //     setTableData(deleteRow);
+
+  //     table.onUpdatePageDeleteRow(dataInPage.length);
+  //   },
+  //   [dataInPage.length, table, tableData]
+  // );
   const handleDeleteRow = useCallback(
-    (id) => {
-      const deleteRow = tableData.filter((row) => row.id !== id);
-
-      toast.success('Delete success!');
-
-      setTableData(deleteRow);
-
-      table.onUpdatePageDeleteRow(dataInPage.length);
+    async (id) => {
+      try {
+        const response = await axios.delete(`${endpoints.company.delete}/${id}`);
+        if (response.status) {
+          const deleteRow = tableData.filter((row) => row.id !== id);
+          setTableData(deleteRow);
+          table.onUpdatePageDeleteRow(tableData.length);
+          if (!tableData.length) {
+            table.onResetPage();
+          }
+          toast.success('تم الحذف بنجاح');
+        } else {
+          toast(response.message);
+        }
+        confirm.onFalse();
+      } catch (error) {
+        console.log(error);
+      }
     },
-    [dataInPage.length, table, tableData]
+    [confirm, table, tableData]
   );
-
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
 
@@ -121,7 +140,7 @@ export function CompanyListView() {
 
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.user.edit(id));
+      router.push(paths.dashboard.company.edit(id));
     },
     [router]
   );
@@ -147,7 +166,7 @@ export function CompanyListView() {
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.user.new}
+              href={paths.dashboard.company.new}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >

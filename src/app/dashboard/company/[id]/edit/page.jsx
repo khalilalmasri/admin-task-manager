@@ -11,10 +11,10 @@ export const metadata = { title: `company edit | Dashboard - ${CONFIG.site.name}
 export default function Page({ params }) {
   const { id } = params;
 
-  const currentUser = _userList.find((user) => user.id === id);
+  // const currentUser = _userList.find((user) => user.id === id);
 
   // return <UserEditView user={currentUser} />;
-  return <CompanyEditView user={currentUser} />;
+  return <CompanyEditView id={id} />;
 }
 
 // ----------------------------------------------------------------------

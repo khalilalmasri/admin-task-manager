@@ -5,9 +5,10 @@ import { CONFIG } from 'src/config-global';
 // ----------------------------------------------------------------------
 
 const axiosInstance = axios.create({ baseURL: CONFIG.site.serverUrl });
+// const axiosInstance = axios.create({ baseURL: 'https://todo.int-vision.com' });
 
 axiosInstance.interceptors.response.use(
-  (response) => response,
+  (res) => res,
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong!')
 );
 
@@ -58,7 +59,10 @@ export const endpoints = {
   },
   company: {
     list: '/api/admin/company',
-    details: '/api/company/details',
-    search: '/api/company/search',
+    details: '/api/admin/company',
+    search: '/api/company/company',
+    delete: '/api/admin/company',
+    put: '/api/admin/company',
+    create: '/api/admin/company',
   },
 };
