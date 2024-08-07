@@ -6,4 +6,6 @@ export * from './company-cards-view';
 
 export * from './company-create-view';
 
+export * from './company-import-view';
+
 export * from './company-profile-view';

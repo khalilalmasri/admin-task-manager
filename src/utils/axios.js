@@ -64,5 +64,6 @@ export const endpoints = {
     delete: '/api/admin/company',
     put: '/api/admin/company',
     create: '/api/admin/company',
+    import: '/api/admin/import-company',
   },
 };

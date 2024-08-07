@@ -57,27 +57,27 @@ export const navData = [
         icon: ICONS.analytics,
         disabled: true,
       },
-      { title: 'الشركات', path: paths.dashboard.company.list, icon: ICONS.job },
+      // { title: 'الشركات', path: paths.dashboard.company.list, icon: ICONS.job },
       { title: 'المهام', path: paths.dashboard.kanban, icon: ICONS.course },
       { title: 'التقويم', path: paths.dashboard.calendar, icon: ICONS.file },
       // { title: 'Course', path: paths.dashboard.general.course, icon: ICONS.course },
     ],
   },
-  // {
-  //   // subheader: 'Management',
-  //   items: [
-  //     {
-  //       title: 'الشركات',
-  //       path: paths.dashboard.company.cards,
-  //       icon: ICONS.job,
-  //       children: [
-  //         { title: 'قائمة الشركات', path: paths.dashboard.company.list },
-  //         { title: 'إضافة شركة', path: paths.dashboard.company.new },
-  //         { title: 'تعديل شركة', path: paths.dashboard.company.demo.edit },
-  //       ],
-  //     },
-  //   ],
-  // },
+  {
+    // subheader: 'Management',
+    items: [
+      {
+        title: 'الشركات',
+        path: paths.dashboard.company.list,
+        icon: ICONS.job,
+        children: [
+          { title: 'قائمة الشركات', path: paths.dashboard.company.list },
+          { title: 'إضافة شركة', path: paths.dashboard.company.new },
+          { title: 'استيراد شركة', path: paths.dashboard.company.import },
+        ],
+      },
+    ],
+  },
 
   /**
    * Management

@@ -1,16 +1,14 @@
 import { z as zod } from 'zod';
 import { useMemo } from 'react';
-import { useForm, Controller } from 'react-hook-form';
-// import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Switch from '@mui/material/Switch';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
-import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
@@ -20,9 +18,7 @@ import axios, { endpoints } from 'src/utils/axios';
 
 import { Label } from 'src/components/label';
 import { toast } from 'src/components/snackbar';
-import { Form, Field } from 'src/components/hook-form';
-
-import { STORAGE_KEY } from 'src/auth/context/jwt';
+import { Form, Field, RHFAutocomplete } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -39,14 +35,26 @@ export const NewUserSchema = zod.object({
   register_number: zod.string().min(1, { message: 'register_number number is required!' }),
   address: zod.string().min(1, { message: 'address is required!' }),
   // contract_duration: zod.number({ message: 'contract_duration is required!' }),
-  // status: zod.number({ message: 'state is required!' }),
+  contract_duration: zod.string(),
+  status: zod.enum(['0', '1', '2', '3'], {
+    errorMap: () => ({ message: 'يجب اختيار نوع العقد من القيم المتاحة' }),
+  }),
   scope: zod.string().min(1, { message: 'scope is required!' }),
-  // contract_type: zod.number({ message: 'contract_type is required!' }),
+  // contract_type: zod.string({ message: 'contract_type is required!' }),
+  contract_type: zod.enum(['1', '2', '3'], {
+    errorMap: () => ({ message: 'يجب اختيار نوع العقد من القيم المتاحة' }),
+  }),
 });
 
 // ----------------------------------------------------------------------
 
 export function CompanyNewEditForm({ currentCompany }) {
+  // const statusList = [
+  //   { id: 1, name: 'active' },
+  //   { id: 2, name: 'pending' },
+  //   { id: 3, name: 'banned' },
+  //   { id: 4, name: 'rejected' },
+  // ];
   const router = useRouter();
 
   const defaultValues = useMemo(
@@ -56,18 +64,21 @@ export function CompanyNewEditForm({ currentCompany }) {
       phone_number: currentCompany?.phone_number || '',
       register_number: currentCompany?.register_number || '',
       address: currentCompany?.address || '',
-      contract_duration: currentCompany?.contract_duration || '',
-      stateus: currentCompany?.stateus || '',
+      contract_duration: currentCompany?.contract_duration?.toString() || '',
+      status: currentCompany?.status.toString() || 0,
+      // status: statusList[parseInt(currentCompany?.status, 10) - 1] || null,
+      // status: statusList[currentCompany?.status] || null,
+
       scope: currentCompany?.scope || '',
-      contract_type: currentCompany?.contract_type || '',
+      contract_type: currentCompany?.contract_type?.toString() || '',
     }),
     [currentCompany]
   );
-  console.log('Token:', localStorage.getItem(STORAGE_KEY));
-  console.log('Endpoint:', endpoints.auth.signIn);
+  // console.log('Token:', localStorage.getItem(STORAGE_KEY));
+  // console.log('Endpoint:', endpoints.auth.signIn);
   const methods = useForm({
     mode: 'onSubmit',
-    // resolver: zodResolver(NewUserSchema),
+    resolver: zodResolver(NewUserSchema),
     defaultValues,
   });
 
@@ -91,7 +102,9 @@ export function CompanyNewEditForm({ currentCompany }) {
         register_number: data.register_number,
         address: data.address,
         contract_duration: data.contract_duration,
-        status: data.status,
+        // status: parseInt(data.status, 10),
+        status: parseInt(data.status, 10),
+        // status: data.status.id,
         scope: data.scope,
         contract_type: data.contract_type,
       };
@@ -158,7 +171,7 @@ export function CompanyNewEditForm({ currentCompany }) {
               />
             </Box>
 
-            {currentCompany && (
+            {/* {currentCompany && (
               <FormControlLabel
                 labelPlacement="start"
                 control={
@@ -194,7 +207,7 @@ export function CompanyNewEditForm({ currentCompany }) {
                   justifyContent: 'space-between',
                 }}
               />
-            )}
+            )} */}
 
             {/* <Field.Switch
               name="isVerified"
@@ -253,6 +266,24 @@ export function CompanyNewEditForm({ currentCompany }) {
               <Field.Text name="status" label="الحالة" />
               <Field.Text name="contract_duration" label="مدة العقد بعدد السنين" />
               {/* <Field.Text name="role" label="Role" /> */}
+              {/* <RHFAutocomplete
+                name="status"
+                label="الحالة"
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                options={statusList?.map((stat) => stat)}
+                getOptionLabel={(option) => String(option.name)}
+                renderOption={(props, option) => {
+                  if (!option.name) {
+                    return null;
+                  }
+
+                  return (
+                    <li {...props} key={option.id}>
+                      {option.name}
+                    </li>
+                  );
+                }}
+              /> */}
             </Box>
             <Stack spacing={1.5} sx={{ mt: 3 }}>
               <Typography variant="subtitle2">مدة العقد</Typography>
