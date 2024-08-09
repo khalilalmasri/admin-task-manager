@@ -2,6 +2,7 @@
 
 import { paths } from 'src/routes/paths';
 
+import { useTranslate } from 'src/locales';
 import { useShowCompany } from 'src/actions/company';
 import { DashboardContent } from 'src/layouts/dashboard';
 
@@ -14,17 +15,18 @@ import { CompanyNewEditForm } from '../company-new-edit-form';
 
 // export function CompanyEditView({ user: currentUser }) {
 export function CompanyEditView({ id }) {
-  const { company } = useShowCompany(id);
+  const {company } = useShowCompany(id);
+  const {t} = useTranslate();
   if (!company) {
     return <SplashScreen />;
   }
   return (
     <DashboardContent>
       <CustomBreadcrumbs
-        heading="تعديل الشركة"
+        heading={t('edit_company')}
         links={[
-          { name: 'لوحة التحكم', href: paths.dashboard.root },
-          { name: 'الشركات', href: paths.dashboard.company.list },
+          { name: t('dashboard'), href: paths.dashboard.root },
+          { name: t('companys'), href: paths.dashboard.company.list },
           { name: company?.name },
         ]}
         sx={{ mb: { xs: 3, md: 5 } }}

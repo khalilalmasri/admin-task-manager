@@ -19,6 +19,7 @@ import axios, { endpoints } from 'src/utils/axios';
 import { Label } from 'src/components/label';
 import { toast } from 'src/components/snackbar';
 import { Form, Field, RHFAutocomplete } from 'src/components/hook-form';
+import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
@@ -56,7 +57,7 @@ export function CompanyNewEditForm({ currentCompany }) {
   //   { id: 4, name: 'rejected' },
   // ];
   const router = useRouter();
-
+  const {t} = useTranslate();
   const defaultValues = useMemo(
     () => ({
       name: currentCompany?.name || '',
@@ -117,7 +118,7 @@ export function CompanyNewEditForm({ currentCompany }) {
         reset();
       }
       if (response.status) {
-        toast(currentCompany ? 'update_success' : 'create_success');
+        toast(currentCompany ? t('update_success') : t('create_success'));
         router.push(paths.dashboard.company.list);
       } else {
         toast(response.statusText);
@@ -138,14 +139,14 @@ export function CompanyNewEditForm({ currentCompany }) {
               <Label
                 color={
                   // (values.status === 'active' && 'success') ||
-                  (values.status === 1 && 'success') ||
+                  (values.status === '1' && 'success') ||
                   // (values.status === 'banned' && 'error') ||
-                  (values.status === 0 && 'error') ||
+                  (values.status === '0' && 'default') ||
                   'warning'
                 }
                 sx={{ position: 'absolute', top: 24, right: 24 }}
               >
-                {values.status}
+                {values.status === '1' ? t('active') : t('rejected')}
               </Label>
             )}
 
@@ -246,25 +247,15 @@ export function CompanyNewEditForm({ currentCompany }) {
                 sm: 'repeat(2, 1fr)',
               }}
             >
-              <Field.Text name="name" label="أسم الشركة" />
-              <Field.Text name="email" label="البريد الالكتروني" />
-              <Field.Text name="phone_number" label="رقم الهاتف" />
-              {/* <Field.Phone name="phone_number" label="رقم الهاتف" /> */}
-
-              {/* <Field.CountrySelect
-                fullWidth
-                name="country"
-                label="Country"
-                placeholder="Choose a country"
-              /> */}
-
-              <Field.Text name="register_number" label="السجل التجاري" />
-              <Field.Text name="address" label="عنوان الشركة" />
-              <Field.Text name="scope" label="المجال" />
-
-              <Field.Text name="contract_type" label="نوع العقد" />
-              <Field.Text name="status" label="الحالة" />
-              <Field.Text name="contract_duration" label="مدة العقد بعدد السنين" />
+              <Field.Text name="name" label={t('company_name')} />
+              <Field.Text name="email" label={t('email')} />
+              <Field.Text name="phone_number" label={t('phone_number')} />
+              <Field.Text name="register_number" label={t('register_number')} />
+              <Field.Text name="address" label={t('address')}/>
+              <Field.Text name="scope" label= {t('scope')} />
+              <Field.Text name="contract_type" label={t('contract_type')} />
+              <Field.Text name="status" label={t('status')} />
+              <Field.Text name="contract_duration" label={t('contract_duration')} />
               {/* <Field.Text name="role" label="Role" /> */}
               {/* <RHFAutocomplete
                 name="status"
@@ -285,17 +276,17 @@ export function CompanyNewEditForm({ currentCompany }) {
                 }}
               /> */}
             </Box>
-            <Stack spacing={1.5} sx={{ mt: 3 }}>
-              <Typography variant="subtitle2">مدة العقد</Typography>
+            {/* <Stack spacing={1.5} sx={{ mt: 3 }}>
+              <Typography variant="subtitle2">{t('contract_duration')} </Typography>
               <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
                 <Field.DatePicker name="available.startDate" label="تاريخ البدء" />
                 <Field.DatePicker name="available.endDate" label="تاريخ الانتهاء" />
               </Stack>
-            </Stack>
+            </Stack> */}
 
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-                {!currentCompany ? 'إضافة شركة' : 'حفظ التعديلات'}
+                {!currentCompany ? t('add_company') : t('save_changes')}
               </LoadingButton>
             </Stack>
           </Card>

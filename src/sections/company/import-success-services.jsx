@@ -2,71 +2,46 @@
 import { useEffect } from 'react';
 // import PropTypes from 'prop-types';
 
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import Alert from '@mui/material/Alert';
-import Dialog from '@mui/material/Dialog';
-import Button from '@mui/material/Button';
-import Collapse from '@mui/material/Collapse';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import IconButton from '@mui/material/IconButton';
-import DialogTitle from '@mui/material/DialogTitle';
-import ListItemText from '@mui/material/ListItemText';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
+import {
+  Alert,
+  Paper,
+  Stack,
+  Button,
+  Dialog,
+  Collapse,
+  TableRow,
+  TableCell,
+  IconButton,
+  DialogTitle,
+  ListItemText,
+  DialogActions,
+  DialogContent,
+} from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { useTranslate } from 'src/locales';
 
-import Iconify from 'src/components/iconify';
+import { Iconify } from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 export default function ImportSuccessTableRowServices({ row, message, index }) {
   // const { service, student_number, semester, tax, discount } = row;
   const { ...keys } = row;
-  // console.log('row', row);
   const theKeys = Object.keys(row);
-  // console.log('theKeys', theKeys);
-  // console.log(message);
-  // console.log('typeof', typeof row);
+  console.log(message);
   console.log('row', row);
-  //   const keysObject = {};
-  // for (const key in row) {
-  //   keysObject[key] = null; // Assign null values to represent keys only
-  // }
-  // console.log(keysObject);
-  // const keysObject = Object.keys(row).reduce((obj, key) => {
-  //   obj[key] = null; // Assign null values to represent keys only
-  //   return obj;
-  // }, {});
-  // const keysObject = {};
-  // const keysObject = Object.keys(row).map((key) => ({ key }));
-  // const keysObject = Object.keys(row).reduce((obj, key) => {
-  //   obj[key] = key;
-  //   return obj;
-  // }, {});
 
-  // console.log('keysObject', keysObject);
-  // console.log(' success success success success success success');
   const { t } = useTranslate();
   useEffect(() => {
     if (
       keys === undefined
-      // service === undefined ||
-      // student_number === undefined ||
-      // semester === undefined ||
-      // tax === undefined ||
-      // discount === undefined
+
     ) {
       fileField.onTrue();
     }
   }, [row]);
-  // console.log('keys', keys);
-  // console.log('theKeys.length', theKeys.length);
-  // console.log('keys[0]', keys[theKeys[0]]);
   const collapse = useBoolean();
   const fileField = useBoolean();
   const renderPrimary = (
@@ -75,18 +50,7 @@ export default function ImportSuccessTableRowServices({ row, message, index }) {
       {theKeys.map((key, i) => (
         <TableCell key={i}>{keys[theKeys[i]]}</TableCell>
       ))}
-      {/* <TableCell>{index}</TableCell>
-      <TableCell>{keys[theKeys[0]]}</TableCell>
-      <TableCell>{keys[theKeys[1]]}</TableCell>
-      <TableCell>{keys[theKeys[2]]}</TableCell>
-      <TableCell>{keys[theKeys[3]]}</TableCell>
-      <TableCell>{keys[theKeys[4]]}</TableCell> */}
-      {/* <TableCell>{keys}</TableCell> */}
-      {/* <TableCell>{service}</TableCell>
-      <TableCell>{student_number}</TableCell>
-      <TableCell>{semester}</TableCell>
-      <TableCell>{tax}</TableCell>
-      <TableCell>{discount}</TableCell> */}
+     
       {/* <TableCell>{curriculum}</TableCell>
       <TableCell>{applied_saudi_vat ? `${t('yes')}` : `${t('no')}`}</TableCell> */}
 
@@ -168,15 +132,14 @@ export default function ImportSuccessTableRowServices({ row, message, index }) {
   return (
     <>
       {renderPrimary}
-
       {renderSecondary}
       {feildFile}
     </>
   );
 }
 
-ImportSuccessTableRowServices.propTypes = {
-  // row: PropTypes.object,
-  // message: PropTypes.array,
-  // index: PropTypes.number,
-};
+// ImportSuccessTableRowServices.propTypes = {
+// row: PropTypes.any,
+// message: PropTypes.any,
+// index: PropTypes.number,
+// };

@@ -129,7 +129,7 @@ export function refreshSession() {
         window.location.href = paths.auth.login;
       }
     },
-    15 * 60 * 1000
+    30 * 60 * 1000
   ); // تحديث كل 15 دقيقة، يمكنك تعديل هذه القيمة
 }
 

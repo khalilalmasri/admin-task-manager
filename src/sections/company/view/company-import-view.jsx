@@ -2,6 +2,7 @@
 
 import { paths } from 'src/routes/paths';
 
+import { useTranslate } from 'src/locales';
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
@@ -11,14 +12,15 @@ import CompanyImport from '../company-import';
 // ----------------------------------------------------------------------
 
 export function CompanyImportView() {
+  const { t } = useTranslate();
   return (
     <DashboardContent>
       <CustomBreadcrumbs
-        heading="استيراد بيانات شركة  "
+        heading={t('import_company')}
         links={[
-          { name: 'لوحة التحكم', href: paths.dashboard.root },
-          { name: 'الشركات', href: paths.dashboard.company.list },
-          { name: ' استيراد' },
+          { name: t('dashboard'), href: paths.dashboard.root },
+          { name: t('companys'), href: paths.dashboard.company.list },
+          { name: t('import_company') },
         ]}
         sx={{ mb: { xs: 3, md: 5 } }}
       />

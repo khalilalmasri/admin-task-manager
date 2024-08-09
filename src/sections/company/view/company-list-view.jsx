@@ -21,10 +21,11 @@ import { useSetState } from 'src/hooks/use-set-state';
 
 import axios, { endpoints } from 'src/utils/axios';
 
+import { useTranslate } from 'src/locales';
 import { varAlpha } from 'src/theme/styles';
+import { _roles, _userList } from 'src/_mock';
 import { useGetCompanys } from 'src/actions/company';
 import { DashboardContent } from 'src/layouts/dashboard';
-import { _roles, _userList, USER_STATUS_OPTIONS } from 'src/_mock';
 
 import { Label } from 'src/components/label';
 import { toast } from 'src/components/snackbar';
@@ -50,25 +51,32 @@ import { UserTableFiltersResult } from '../company-table-filters-result';
 
 // ----------------------------------------------------------------------
 
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...USER_STATUS_OPTIONS];
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'أسم الشركة' },
-  { id: 'phoneNumber', label: 'الرقم', width: 180 },
-  { id: 'email', label: 'البريد', width: 220 },
-  { id: 'address', label: 'العنوان', width: 180 },
-  { id: 'status', label: 'الحالة', width: 100 },
-  { id: '', width: 88 },
-];
-
 // ----------------------------------------------------------------------
 
 export function CompanyListView() {
+  const { t } = useTranslate();
   const table = useTable();
 
   const router = useRouter();
 
   const confirm = useBoolean();
+  // const USER_STATUS_OPTIONS = [
+  //   { value: 'active', label: t('active') },
+  //   // { value: 'pending', label: 'Pending' },
+  //   // { value: 'banned', label: 'Banned' },
+  //   { value: 'rejected', label: t('rejected') },
+  // ];
+  // const STATUS_OPTIONS = [{ value: 'all', label: t('All') }, ...USER_STATUS_OPTIONS];
+  const STATUS_OPTIONS = [{ value: 'all', label: t('All') }];
+
+  const TABLE_HEAD = [
+    { id: 'name', label: t('company_name') },
+    { id: 'phoneNumber', label: t('phone_number'), width: 180 },
+    { id: 'email', label: t('email'), width: 220 },
+    { id: 'address', label: t('address'), width: 180 },
+    { id: 'status', label: t('status'), width: 100 },
+    { id: '', width: 88 },
+  ];
 
   const [tableData, setTableData] = useState(_userList);
   const filters = useSetState({ name: '', role: [], status: 'all' });
@@ -114,7 +122,7 @@ export function CompanyListView() {
           if (!tableData.length) {
             table.onResetPage();
           }
-          toast.success('تم الحذف بنجاح');
+          toast.success(t('delete_success'));
         } else {
           toast(response.message);
         }
@@ -123,12 +131,12 @@ export function CompanyListView() {
         console.log(error);
       }
     },
-    [confirm, table, tableData]
+    [confirm, table, tableData, t]
   );
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
 
-    toast.success('Delete success!');
+    toast.success(t('delete_success'));
 
     setTableData(deleteRows);
 
@@ -136,7 +144,7 @@ export function CompanyListView() {
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
     });
-  }, [dataFiltered.length, dataInPage.length, table, tableData]);
+  }, [dataFiltered.length, dataInPage.length, table, tableData, t]);
 
   const handleEditRow = useCallback(
     (id) => {
@@ -157,11 +165,11 @@ export function CompanyListView() {
     <>
       <DashboardContent>
         <CustomBreadcrumbs
-          heading="الشركات"
+          heading={t('companys')}
           links={[
-            { name: 'لوحة التحكم', href: paths.dashboard.root },
-            { name: 'الشركات', href: paths.dashboard.company.root },
-            { name: 'قائمة الشركات' },
+            { name: t('dashboard'), href: paths.dashboard.root },
+            { name: t('companys'), href: paths.dashboard.company.root },
+            { name: t('companys_list') },
           ]}
           action={
             <Button
@@ -170,7 +178,7 @@ export function CompanyListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              شركة جديدة
+              {t('new_company')}
             </Button>
           }
           sx={{ mb: { xs: 3, md: 5 } }}
@@ -201,7 +209,7 @@ export function CompanyListView() {
                     color={
                       (tab.value === 'active' && 'success') ||
                       (tab.value === 'pending' && 'warning') ||
-                      (tab.value === 'banned' && 'error') ||
+                      (tab.value === 'rejected' && 'error') ||
                       'default'
                     }
                   >
@@ -213,13 +221,11 @@ export function CompanyListView() {
               />
             ))}
           </Tabs>
-
           <UserTableToolbar
             filters={filters}
             onResetPage={table.onResetPage}
             options={{ roles: _roles }}
           />
-
           {canReset && (
             <UserTableFiltersResult
               filters={filters}
@@ -241,7 +247,7 @@ export function CompanyListView() {
                 )
               }
               action={
-                <Tooltip title="Delete">
+                <Tooltip title={t('delete')}>
                   <IconButton color="primary" onClick={confirm.onTrue}>
                     <Iconify icon="solar:trash-bin-trash-bold" />
                   </IconButton>
@@ -309,10 +315,10 @@ export function CompanyListView() {
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title="Delete"
+        title={t('delete')}
         content={
           <>
-            Are you sure want to delete <strong> {table.selected.length} </strong> items?
+            {t('Are_you_sure_want_to_delete')} <strong> {table.selected.length} </strong> items?
           </>
         }
         action={

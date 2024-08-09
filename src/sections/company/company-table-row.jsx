@@ -17,12 +17,13 @@ import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
+import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
 export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
-
+  const {t} = useTranslate();
   const popover = usePopover();
 
   const quickEdit = useBoolean();
@@ -61,11 +62,11 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
             color={
               (row.status === 1 && 'success') ||
               (row.status === 'pending' && 'warning') ||
-              (row.status === 'banned' && 'error') ||
+              (row.status === 'rejected' && 'error') ||
               'default'
             }
           >
-            {row.status === 1 ? 'العقد مفعل' : 'العقد غير مفعل'}
+            {row.status === 1 ? t('active') : t('rejected')}
           </Label>
         </TableCell>
 
@@ -104,7 +105,7 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
             sx={{ color: 'error.main' }}
           >
             <Iconify icon="solar:trash-bin-trash-bold" />
-            حذف
+            {t('delete')}
           </MenuItem>
 
           <MenuItem
@@ -114,7 +115,7 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
             }}
           >
             <Iconify icon="solar:pen-bold" />
-            تعديل
+            {t('edit')}
           </MenuItem>
         </MenuList>
       </CustomPopover>
@@ -122,11 +123,11 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title="Delete"
-        content="Are you sure want to delete?"
+        title={t('delete')}
+        content={t("Are_you_sure_want_to_delete?")}
         action={
           <Button variant="contained" color="error" onClick={onDeleteRow}>
-            حذف
+            {t('delete')}
           </Button>
         }
       />
