@@ -33,7 +33,7 @@ export function OverviewAppView() {
             description="برنامج إدارة المهام المتكامل لمتابعة و ضبط الدوام والمهام"
             img={<SeoIllustration hideBackground />}
             action={
-              <Button href={paths.dashboard.kanban} variant="contained" color="primary">
+              <Button href={paths.dashboard.task.list} variant="contained" color="primary">
                 الذهاب إلى قسم المهام
               </Button>
             }

@@ -18,7 +18,7 @@ import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
-import { TypeList ,StatusList  , PriorityList  } from './project-data';
+import { TypeList, StatusList, PriorityList } from './project-data';
 
 // ----------------------------------------------------------------------
 
@@ -27,10 +27,16 @@ export function ProjectTableRow({ row, selected, onEditRow, onSelectRow, onDelet
   const { t } = useTranslate();
   const popover = usePopover();
   // const { companys } = useGetCompanys();
-  const getNameById = (id , List) => {
+  const getNameById = (id, List) => {
     const foundCompany = List.find((company) => company.id === id.toString());
     return foundCompany ? t(foundCompany.name) : '';
   };
+  function shortenText(text) {
+    if (text?.length > 15) {
+      return `${text.slice(0, 10)}...`;
+    }
+    return text;
+  }
 
   return (
     <>
@@ -56,8 +62,8 @@ export function ProjectTableRow({ row, selected, onEditRow, onSelectRow, onDelet
 
         <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.name}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.desc}</TableCell>
-         <TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{shortenText(row?.desc)}</TableCell>
+        <TableCell>
           <Label
             variant="soft"
             color={
@@ -67,11 +73,11 @@ export function ProjectTableRow({ row, selected, onEditRow, onSelectRow, onDelet
               'default'
             }
           >
-            {getNameById(row?.status , StatusList)}
+            {getNameById(row?.status, StatusList)}
           </Label>
         </TableCell>
         {/* <TableCell sx={{ whiteSpace: 'nowrap' }}>{getNameById(row?.status , StatusList)}</TableCell> */}
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{getNameById(row?.type , TypeList)}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{getNameById(row?.type, TypeList)}</TableCell>
         <TableCell>
           <Label
             variant="soft"
@@ -82,11 +88,11 @@ export function ProjectTableRow({ row, selected, onEditRow, onSelectRow, onDelet
               'default'
             }
           >
-            {getNameById(row?.priority , PriorityList)}
+            {getNameById(row?.priority, PriorityList)}
           </Label>
         </TableCell>
         {/* <TableCell sx={{ whiteSpace: 'nowrap' }}>{getNameById(row?.priority , PriorityList)}</TableCell> */}
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.start_date}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{shortenText(row?.start_date)}</TableCell>
 
         {/* <TableCell>
           <Label
