@@ -17,11 +17,11 @@ import axios, { endpoints } from 'src/utils/axios';
 
 import { useTranslate } from 'src/locales';
 
-import { Label } from 'src/components/label';
+// import { Label } from 'src/components/label';
 import { toast } from 'src/components/snackbar';
 import { Form, Field, RHFAutocomplete } from 'src/components/hook-form';
 
-import { TypeList, StatusList , PriorityList } from './project-data';
+import { TypeList, StatusList, PriorityList } from './project-data';
 
 // ----------------------------------------------------------------------
 
@@ -187,7 +187,7 @@ export function ProjectNewEditForm({ currentProject }) {
 
   return (
     <Form methods={methods} onSubmit={onSubmit}>
-      <Grid container >
+      <Grid container>
         {/* <Grid xs={12} md={4}>
            <Card sx={{ pt: 10, pb: 5, px: 3 }}>
             {currentProject && (

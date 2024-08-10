@@ -1,7 +1,6 @@
 import { CONFIG } from 'src/config-global';
 import { _userList } from 'src/_mock/_user';
 
-import { UserEditView } from 'src/sections/user-old/view';
 import { CompanyEditView } from 'src/sections/company/view';
 
 // ----------------------------------------------------------------------
@@ -11,9 +10,7 @@ export const metadata = { title: `company edit | Dashboard - ${CONFIG.site.name}
 export default function Page({ params }) {
   const { id } = params;
 
-  // const currentUser = _userList.find((user) => user.id === id);
 
-  // return <UserEditView user={currentUser} />;
   return <CompanyEditView id={id} />;
 }
 

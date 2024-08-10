@@ -13,17 +13,18 @@ import IconButton from '@mui/material/IconButton';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { useTranslate } from 'src/locales';
+
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
-import { useTranslate } from 'src/locales';
 
 // ----------------------------------------------------------------------
 
 export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
-  const {t} = useTranslate();
+  const { t } = useTranslate();
   const popover = usePopover();
 
   const quickEdit = useBoolean();
@@ -124,7 +125,7 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
         open={confirm.value}
         onClose={confirm.onFalse}
         title={t('delete')}
-        content={t("Are_you_sure_want_to_delete?")}
+        content={t('Are_you_sure_want_to_delete?')}
         action={
           <Button variant="contained" color="error" onClick={onDeleteRow}>
             {t('delete')}

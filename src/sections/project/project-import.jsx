@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import { LoadingButton } from '@mui/lab';
 import {
+  Box,
   Card,
   Alert,
   Stack,
@@ -18,7 +19,6 @@ import {
   DialogActions,
   DialogContent,
   TableContainer,
-  Box,
 } from '@mui/material';
 
 import { useBoolean } from 'src/hooks/use-boolean';
@@ -152,17 +152,12 @@ export default function ProjectImport() {
             onDelete={handleRemoveFile}
           />
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%' }}>
-  <Box sx={{ width: '33%' }}>
-    <LoadingButton
-      type="submit"
-      variant="contained"
-      loading={isSubmitting}
-      fullWidth
-    >
-      {t('import_file')}
-    </LoadingButton>
-  </Box>
-</Box>
+            <Box sx={{ width: '33%' }}>
+              <LoadingButton type="submit" variant="contained" loading={isSubmitting} fullWidth>
+                {t('import_file')}
+              </LoadingButton>
+            </Box>
+          </Box>
           {/* <LoadingButton   type="submit" variant="contained" loading={isSubmitting}>
             {t('import')}
           </LoadingButton> */}
@@ -252,4 +247,3 @@ export default function ProjectImport() {
     </Form>
   );
 }
-

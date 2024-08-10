@@ -16,10 +16,11 @@ import { useRouter } from 'src/routes/hooks';
 import { fData } from 'src/utils/format-number';
 import axios, { endpoints } from 'src/utils/axios';
 
+import { useTranslate } from 'src/locales';
+
 import { Label } from 'src/components/label';
 import { toast } from 'src/components/snackbar';
-import { Form, Field, RHFAutocomplete } from 'src/components/hook-form';
-import { useTranslate } from 'src/locales';
+import { Form, Field } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -57,7 +58,7 @@ export function CompanyNewEditForm({ currentCompany }) {
   //   { id: 4, name: 'rejected' },
   // ];
   const router = useRouter();
-  const {t} = useTranslate();
+  const { t } = useTranslate();
   const defaultValues = useMemo(
     () => ({
       name: currentCompany?.name || '',
@@ -251,8 +252,8 @@ export function CompanyNewEditForm({ currentCompany }) {
               <Field.Text name="email" label={t('email')} />
               <Field.Text name="phone_number" label={t('phone_number')} />
               <Field.Text name="register_number" label={t('register_number')} />
-              <Field.Text name="address" label={t('address')}/>
-              <Field.Text name="scope" label= {t('scope')} />
+              <Field.Text name="address" label={t('address')} />
+              <Field.Text name="scope" label={t('scope')} />
               <Field.Text name="contract_type" label={t('contract_type')} />
               <Field.Text name="status" label={t('status')} />
               <Field.Text name="contract_duration" label={t('contract_duration')} />

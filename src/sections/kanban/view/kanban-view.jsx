@@ -28,7 +28,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { useTranslate } from 'src/locales';
 import { hideScrollY } from 'src/theme/styles';
-import { useGetCompanys } from 'src/actions/company';
+// import { useGetCompanys } from 'src/actions/company';
 import { DashboardContent } from 'src/layouts/dashboard';
 import { moveTask, moveColumn, useGetBoard } from 'src/actions/kanban';
 
@@ -78,7 +78,7 @@ export function KanbanView() {
     useSensor(TouchSensor, { activationConstraint: { distance: 5 } }),
     useSensor(KeyboardSensor, { coordinateGetter })
   );
-  
+
   const collisionDetectionStrategy = useCallback(
     (args) => {
       if (activeId && activeId in board.tasks) {

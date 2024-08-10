@@ -17,13 +17,13 @@ import { _userAbout, _userFeeds, _userFriends, _userGallery, _userFollowers } fr
 import { Iconify } from 'src/components/iconify';
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 
-import { useMockedUser } from 'src/auth/hooks';
-
 import { ProfileHome } from 'src/sections/user-old/profile-home';
 import { ProfileCover } from 'src/sections/user-old/profile-cover';
 import { ProfileFriends } from 'src/sections/user-old/profile-friends';
 import { ProfileGallery } from 'src/sections/user-old/profile-gallery';
 import { ProfileFollowers } from 'src/sections/user-old/profile-followers';
+
+import { useMockedUser } from 'src/auth/hooks';
 
 // ----------------------------------------------------------------------
 

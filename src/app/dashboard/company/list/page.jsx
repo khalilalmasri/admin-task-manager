@@ -1,4 +1,5 @@
 import { CONFIG } from 'src/config-global';
+
 import { CompanyListView } from 'src/sections/company/view';
 
 // import { UserListView } from 'src/sections/user/view';
