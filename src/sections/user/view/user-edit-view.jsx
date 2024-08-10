@@ -2,28 +2,36 @@
 
 import { paths } from 'src/routes/paths';
 
+import { useTranslate } from 'src/locales';
+import { useShowUser } from 'src/actions/user';
 import { DashboardContent } from 'src/layouts/dashboard';
 
+import { SplashScreen } from 'src/components/loading-screen';
 import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 
 import { UserNewEditForm } from '../user-new-edit-form';
-
 // ----------------------------------------------------------------------
 
-export function UserEditView({ user: currentUser }) {
+
+export function UserEditView({ id }) {
+  const {user } = useShowUser(id);
+  const {t} = useTranslate();
+  if (!user) {
+    return <SplashScreen />;
+  }
   return (
     <DashboardContent>
       <CustomBreadcrumbs
-        heading="Edit"
+        heading={t('edit_user')}
         links={[
-          { name: 'Dashboard', href: paths.dashboard.root },
-          { name: 'User', href: paths.dashboard.user.root },
-          { name: currentUser?.name },
+          { name: t('dashboard'), href: paths.dashboard.root },
+          { name: t('users'), href: paths.dashboard.user.list },
+          { name: user?.name },
         ]}
         sx={{ mb: { xs: 3, md: 5 } }}
       />
 
-      <UserNewEditForm currentUser={currentUser} />
+      <UserNewEditForm currentUser={user} />
     </DashboardContent>
   );
 }

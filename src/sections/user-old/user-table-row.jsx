@@ -13,27 +13,21 @@ import IconButton from '@mui/material/IconButton';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { useTranslate } from 'src/locales';
-import { useGetCompanys } from 'src/actions/company';
-
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
+import { UserQuickEditForm } from './user-quick-edit-form';
+
 // ----------------------------------------------------------------------
 
 export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
-  const { t } = useTranslate();
-  const popover = usePopover();
-  const {companys} = useGetCompanys();
-  const getNameById = (id) => {
-    const foundCompany = companys.find((company) => company.id === parseInt(id, 10));
-    return foundCompany ? foundCompany.name : '';
-  };
 
-  // const quickEdit = useBoolean();
+  const popover = usePopover();
+
+  const quickEdit = useBoolean();
 
   return (
     <>
@@ -44,49 +38,48 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
 
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Avatar alt={row?.name} src={row?.avatarUrl} />
+            <Avatar alt={row.name} src={row.avatarUrl} />
 
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
               <Link color="inherit" onClick={onEditRow} sx={{ cursor: 'pointer' }}>
-                {row?.name}
+                {row.name}
               </Link>
               <Box component="span" sx={{ color: 'text.disabled' }}>
-                {row?.email}
+                {row.email}
               </Box>
             </Stack>
           </Stack>
         </TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{getNameById(row?.company_id)}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.phoneNumber}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.phone_number}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.company}</TableCell>
 
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.email}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.national_id}</TableCell>
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row.role}</TableCell>
 
         <TableCell>
           <Label
             variant="soft"
             color={
-              (row.role === 0 && 'default') ||
-              (row.role === 1 && 'success') ||
-              (row.role === 2 && 'warning') ||
+              (row.status === 'active' && 'success') ||
+              (row.status === 'pending' && 'warning') ||
+              (row.status === 'banned' && 'error') ||
               'default'
             }
           >
-            {row.role === 0 ? t('user') : row.role === 1 ? t('admin') : t('company')}
+            {row.status}
           </Label>
         </TableCell>
 
         <TableCell>
           <Stack direction="row" alignItems="center">
             <Tooltip title="Quick Edit" placement="top" arrow>
-              {/* <IconButton
+              <IconButton
                 color={quickEdit.value ? 'inherit' : 'default'}
                 onClick={quickEdit.onTrue}
               >
                 <Iconify icon="solar:pen-bold" />
-              </IconButton> */}
+              </IconButton>
             </Tooltip>
 
             <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
@@ -96,7 +89,7 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
         </TableCell>
       </TableRow>
 
-      {/* <UserQuickEditForm currentUser={row} open={quickEdit.value} onClose={quickEdit.onFalse} /> */}
+      <UserQuickEditForm currentUser={row} open={quickEdit.value} onClose={quickEdit.onFalse} />
 
       <CustomPopover
         open={popover.open}
@@ -113,7 +106,7 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
             sx={{ color: 'error.main' }}
           >
             <Iconify icon="solar:trash-bin-trash-bold" />
-            {t('delete')}
+            Delete
           </MenuItem>
 
           <MenuItem
@@ -123,7 +116,7 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
             }}
           >
             <Iconify icon="solar:pen-bold" />
-            {t('edit')}
+            Edit
           </MenuItem>
         </MenuList>
       </CustomPopover>
@@ -131,11 +124,11 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title={t('delete')}
-        content={t('Are_you_sure_want_to_delete?')}
+        title="Delete"
+        content="Are you sure want to delete?"
         action={
           <Button variant="contained" color="error" onClick={onDeleteRow}>
-            {t('delete')}
+            Delete
           </Button>
         }
       />

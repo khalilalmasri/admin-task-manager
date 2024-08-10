@@ -1,18 +1,20 @@
 import { CONFIG } from 'src/config-global';
 import { _userList } from 'src/_mock/_user';
 
+
 import { UserEditView } from 'src/sections/user/view';
 
 // ----------------------------------------------------------------------
 
-export const metadata = { title: `User edit | Dashboard - ${CONFIG.site.name}` };
+export const metadata = { title: `user edit | Dashboard - ${CONFIG.site.name}` };
 
 export default function Page({ params }) {
   const { id } = params;
 
-  const currentUser = _userList.find((user) => user.id === id);
+  // const currentUser = _userList.find((user) => user.id === id);
 
-  return <UserEditView user={currentUser} />;
+  // return <UserEditView user={currentUser} />;
+  return <UserEditView id={id} />;
 }
 
 // ----------------------------------------------------------------------

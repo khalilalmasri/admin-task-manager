@@ -19,11 +19,11 @@ import { CustomBreadcrumbs } from 'src/components/custom-breadcrumbs';
 
 import { useMockedUser } from 'src/auth/hooks';
 
-import { ProfileHome } from 'src/sections/user/profile-home';
-import { ProfileCover } from 'src/sections/user//profile-cover';
-import { ProfileFriends } from 'src/sections/user//profile-friends';
-import { ProfileGallery } from 'src/sections/user//profile-gallery';
-import { ProfileFollowers } from 'src/sections/user//profile-followers';
+import { ProfileHome } from 'src/sections/user-old/profile-home';
+import { ProfileCover } from 'src/sections/user-old/profile-cover';
+import { ProfileFriends } from 'src/sections/user-old/profile-friends';
+import { ProfileGallery } from 'src/sections/user-old/profile-gallery';
+import { ProfileFollowers } from 'src/sections/user-old/profile-followers';
 
 // ----------------------------------------------------------------------
 

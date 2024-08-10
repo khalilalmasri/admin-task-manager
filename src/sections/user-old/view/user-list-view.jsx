@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -19,13 +19,9 @@ import { RouterLink } from 'src/routes/components';
 import { useBoolean } from 'src/hooks/use-boolean';
 import { useSetState } from 'src/hooks/use-set-state';
 
-import axios, { endpoints } from 'src/utils/axios';
-
-import { useTranslate } from 'src/locales';
 import { varAlpha } from 'src/theme/styles';
-import { _roles, _userList } from 'src/_mock';
-import { useGetUsers } from 'src/actions/user';
 import { DashboardContent } from 'src/layouts/dashboard';
+import { _roles, _userList, USER_STATUS_OPTIONS } from 'src/_mock';
 
 import { Label } from 'src/components/label';
 import { toast } from 'src/components/snackbar';
@@ -51,42 +47,30 @@ import { UserTableFiltersResult } from '../user-table-filters-result';
 
 // ----------------------------------------------------------------------
 
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...USER_STATUS_OPTIONS];
+
+const TABLE_HEAD = [
+  { id: 'name', label: 'Name' },
+  { id: 'phoneNumber', label: 'Phone number', width: 180 },
+  { id: 'company', label: 'Company', width: 220 },
+  { id: 'role', label: 'Role', width: 180 },
+  { id: 'status', label: 'Status', width: 100 },
+  { id: '', width: 88 },
+];
+
 // ----------------------------------------------------------------------
 
 export function UserListView() {
-  const { t } = useTranslate();
   const table = useTable();
 
   const router = useRouter();
 
   const confirm = useBoolean();
-  // const USER_STATUS_OPTIONS = [
-  //   { value: 'active', label: t('active') },
-  //   // { value: 'pending', label: 'Pending' },
-  //   // { value: 'banned', label: 'Banned' },
-  //   { value: 'rejected', label: t('rejected') },
-  // ];
-  // const STATUS_OPTIONS = [{ value: 'all', label: t('All') }, ...USER_STATUS_OPTIONS];
-  const STATUS_OPTIONS = [{ value: 'all', label: t('All') }];
-
-  const TABLE_HEAD = [
-    { id: 'name', label: t('user_name') },
-    { id: 'company_id', label: t('company') },
-    { id: 'phoneNumber', label: t('phone_number'), width: 120 },
-    { id: 'email', label: t('email'), width: 220 },
-    { id: 'national_id', label: t('national_id'), width: 180 },
-    { id: 'role', label: t('role'), width: 100 },
-    // { id: '', width: 88 },
-  ];
 
   const [tableData, setTableData] = useState(_userList);
+
   const filters = useSetState({ name: '', role: [], status: 'all' });
-  const { users, usersEmpty, usersLoading } = useGetUsers();
-  useEffect(() => {
-    if (!usersEmpty || !usersLoading || users) {
-      setTableData(users);
-    }
-  }, [usersEmpty, users, usersLoading]);
+
   const dataFiltered = applyFilter({
     inputData: tableData,
     comparator: getComparator(table.order, table.orderBy),
@@ -100,44 +84,23 @@ export function UserListView() {
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
-  // const handleDeleteRow = useCallback(
-  //   (id) => {
-  //     const deleteRow = tableData.filter((row) => row.id !== id);
-
-  //     toast.success('Delete success!');
-
-  //     setTableData(deleteRow);
-
-  //     table.onUpdatePageDeleteRow(dataInPage.length);
-  //   },
-  //   [dataInPage.length, table, tableData]
-  // );
   const handleDeleteRow = useCallback(
-    async (id) => {
-      try {
-        const response = await axios.delete(`${endpoints.user.delete}/${id}`);
-        if (response.status) {
-          const deleteRow = tableData.filter((row) => row.id !== id);
-          setTableData(deleteRow);
-          table.onUpdatePageDeleteRow(tableData.length);
-          if (!tableData.length) {
-            table.onResetPage();
-          }
-          toast.success(t('delete_success'));
-        } else {
-          toast(response.message);
-        }
-        confirm.onFalse();
-      } catch (error) {
-        console.log(error);
-      }
+    (id) => {
+      const deleteRow = tableData.filter((row) => row.id !== id);
+
+      toast.success('Delete success!');
+
+      setTableData(deleteRow);
+
+      table.onUpdatePageDeleteRow(dataInPage.length);
     },
-    [confirm, table, tableData, t]
+    [dataInPage.length, table, tableData]
   );
+
   const handleDeleteRows = useCallback(() => {
     const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
 
-    toast.success(t('delete_success'));
+    toast.success('Delete success!');
 
     setTableData(deleteRows);
 
@@ -145,7 +108,7 @@ export function UserListView() {
       totalRowsInPage: dataInPage.length,
       totalRowsFiltered: dataFiltered.length,
     });
-  }, [dataFiltered.length, dataInPage.length, table, tableData, t]);
+  }, [dataFiltered.length, dataInPage.length, table, tableData]);
 
   const handleEditRow = useCallback(
     (id) => {
@@ -166,11 +129,11 @@ export function UserListView() {
     <>
       <DashboardContent>
         <CustomBreadcrumbs
-          heading={t('users')}
+          heading="List"
           links={[
-            { name: t('dashboard'), href: paths.dashboard.root },
-            { name: t('users'), href: paths.dashboard.user.root },
-            { name: t('users_list') },
+            { name: 'Dashboard', href: paths.dashboard.root },
+            { name: 'User', href: paths.dashboard.user.root },
+            { name: 'List' },
           ]}
           action={
             <Button
@@ -179,7 +142,7 @@ export function UserListView() {
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              {t('add_user')}
+              New user
             </Button>
           }
           sx={{ mb: { xs: 3, md: 5 } }}
@@ -210,7 +173,7 @@ export function UserListView() {
                     color={
                       (tab.value === 'active' && 'success') ||
                       (tab.value === 'pending' && 'warning') ||
-                      (tab.value === 'rejected' && 'error') ||
+                      (tab.value === 'banned' && 'error') ||
                       'default'
                     }
                   >
@@ -222,11 +185,13 @@ export function UserListView() {
               />
             ))}
           </Tabs>
+
           <UserTableToolbar
             filters={filters}
             onResetPage={table.onResetPage}
             options={{ roles: _roles }}
           />
+
           {canReset && (
             <UserTableFiltersResult
               filters={filters}
@@ -248,7 +213,7 @@ export function UserListView() {
                 )
               }
               action={
-                <Tooltip title={t('delete')}>
+                <Tooltip title="Delete">
                   <IconButton color="primary" onClick={confirm.onTrue}>
                     <Iconify icon="solar:trash-bin-trash-bold" />
                   </IconButton>
@@ -316,10 +281,10 @@ export function UserListView() {
       <ConfirmDialog
         open={confirm.value}
         onClose={confirm.onFalse}
-        title={t('delete')}
+        title="Delete"
         content={
           <>
-            {t('Are_you_sure_want_to_delete')} <strong> {table.selected.length} </strong> items?
+            Are you sure want to delete <strong> {table.selected.length} </strong> items?
           </>
         }
         action={
