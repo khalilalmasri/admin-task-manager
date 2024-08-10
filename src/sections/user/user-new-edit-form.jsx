@@ -22,7 +22,6 @@ import axios, { endpoints } from 'src/utils/axios';
 import { useTranslate } from 'src/locales';
 import { useGetCompanys } from 'src/actions/company';
 
-import { Label } from 'src/components/label';
 import { toast } from 'src/components/snackbar';
 import { Iconify } from 'src/components/iconify';
 import { Form, Field, RHFAutocomplete } from 'src/components/hook-form';
@@ -47,14 +46,14 @@ export const createNewUserSchema = (isEditMode) =>
           .string()
           .min(1, { message: 'كلمة المرور مطلوبة !' })
           .min(6, { message: 'يجب أن تكون الكلمة أكثر من 6 أحرف' }),
-    role: zod
-      .object({
-        id: zod.string().refine((val) => ['0', '1', '2'].includes(val), {
-          message: 'يجب اختيار الصلاحية من القيم المتاحة',
-        }),
-        name: zod.string(),
-      })
-      .nullable(),
+    // role: zod
+    //   .object({
+    //     id: zod.string().refine((val) => ['0', '1', '2'].includes(val), {
+    //       message: 'يجب اختيار الصلاحية من القيم المتاحة',
+    //     }),
+    //     name: zod.string(),
+    //   })
+    //   .nullable(),
     company_id: zod
       .object({
         id: zod
@@ -97,7 +96,7 @@ export function UserNewEditForm({ currentUser }) {
       phone_number: currentUser?.phone_number || '',
       national_id: currentUser?.national_id || '',
       password: currentUser?.password || '',
-      role: RoleList.find((role) => role.id === currentUser?.role?.toString()) || null,
+      // role: RoleList.find((role) => role.id === currentUser?.role?.toString()) || null,
       company_id: currentUser?.company_id
         ? {
             id: currentUser?.company_id.toString(),
@@ -137,7 +136,7 @@ export function UserNewEditForm({ currentUser }) {
         national_id: data.national_id,
         password: data.password,
         password_confirmation: data.password,
-        role: data.role.id,
+        // role: data.role.id,
         company_id: data.company_id.id,
         // company_id: parseInt(data.company_id.id, 10),
       };
@@ -146,7 +145,7 @@ export function UserNewEditForm({ currentUser }) {
         email: data.email,
         phone_number: data.phone_number,
         national_id: data.national_id,
-        role: data.role.id,
+        // role: data.role.id,
         // company_id: parseInt(data.company_id, 10),
         company_id: data.company_id.id,
       };
@@ -176,7 +175,7 @@ export function UserNewEditForm({ currentUser }) {
       <Grid container spacing={3}>
         <Grid xs={12} md={4}>
           <Card sx={{ pt: 10, pb: 5, px: 3 }}>
-            {currentUser && (
+            {/* {currentUser && (
               <Label
                 color={
                   (currentUser?.role === 0 && 'default') ||
@@ -192,7 +191,7 @@ export function UserNewEditForm({ currentUser }) {
                     ? t('admin')
                     : t('company')}
               </Label>
-            )}
+            )} */}
 
             <Box sx={{ mb: 5 }}>
               <Field.UploadAvatar
@@ -331,13 +330,13 @@ export function UserNewEditForm({ currentUser }) {
                 getOptionLabel={(option) => option.name}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
               /> */}
-              <RHFAutocomplete
+              {/* <RHFAutocomplete
                 name="role"
                 label={t('role')}
                 options={RoleList}
                 getOptionLabel={(option) => t(option.name)}
                 isOptionEqualToValue={(option, value) => option.id === value}
-              />
+              /> */}
             </Box>
             <Stack alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton type="submit" variant="contained" loading={isSubmitting}>

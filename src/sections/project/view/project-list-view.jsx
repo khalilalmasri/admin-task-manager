@@ -21,10 +21,10 @@ import { useSetState } from 'src/hooks/use-set-state';
 
 import axios, { endpoints } from 'src/utils/axios';
 
+import { _roles } from 'src/_mock';
 import { useTranslate } from 'src/locales';
 import { varAlpha } from 'src/theme/styles';
-import { _roles, _userList } from 'src/_mock';
-import { useGetUsers } from 'src/actions/user';
+import { useGetProjects } from 'src/actions/project';
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Label } from 'src/components/label';
@@ -45,15 +45,15 @@ import {
   TablePaginationCustom,
 } from 'src/components/table';
 
-import { UserTableRow } from '../user-table-row';
-import { UserTableToolbar } from '../user-table-toolbar';
-import { UserTableFiltersResult } from '../user-table-filters-result';
+import { ProjectTableRow } from '../project-table-row';
+import { ProjectTableToolbar } from '../project-table-toolbar';
+import { ProjectTableFiltersResult } from '../project-table-filters-result';
 
 // ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
 
-export function UserListView() {
+export function ProjectListView() {
   const { t } = useTranslate();
   const table = useTable();
 
@@ -70,23 +70,23 @@ export function UserListView() {
   const STATUS_OPTIONS = [{ value: 'all', label: t('All') }];
 
   const TABLE_HEAD = [
-    { id: 'name', label: t('user_name') },
-    { id: 'company_id', label: t('company') },
-    { id: 'phoneNumber', label: t('phone_number'), width: 120 },
-    { id: 'email', label: t('email'), width: 220 },
-    { id: 'national_id', label: t('national_id'), width: 180 },
-    // { id: 'role', label: t('role'), width: 100 },
+    { id: 'name', label: t('project_name') },
+    { id: 'desc', label: t('description') },
+    { id: 'status', label: t('status'), width: 120 },
+    { id: 'type', label: t('type'), width: 120 },
+    { id: 'priority', label: t('priority'), width: 100 },
+    { id: 'start_date', label: t('start_date'), width: 100 },
     // { id: '', width: 88 },
   ];
 
-  const [tableData, setTableData] = useState(_userList);
+  const [tableData, setTableData] = useState([]);
   const filters = useSetState({ name: '', role: [], status: 'all' });
-  const { users, usersEmpty, usersLoading } = useGetUsers();
+  const { projects, projectsEmpty, projectsLoading } = useGetProjects();
   useEffect(() => {
-    if (!usersEmpty || !usersLoading || users) {
-      setTableData(users);
+    if (!projectsEmpty || !projectsLoading || projects) {
+      setTableData(projects);
     }
-  }, [usersEmpty, users, usersLoading]);
+  }, [projectsEmpty, projects, projectsLoading]);
   const dataFiltered = applyFilter({
     inputData: tableData,
     comparator: getComparator(table.order, table.orderBy),
@@ -115,7 +115,7 @@ export function UserListView() {
   const handleDeleteRow = useCallback(
     async (id) => {
       try {
-        const response = await axios.delete(`${endpoints.user.delete}/${id}`);
+        const response = await axios.delete(`${endpoints.project.delete}/${id}`);
         if (response.status) {
           const deleteRow = tableData.filter((row) => row.id !== id);
           setTableData(deleteRow);
@@ -149,7 +149,7 @@ export function UserListView() {
 
   const handleEditRow = useCallback(
     (id) => {
-      router.push(paths.dashboard.user.edit(id));
+      router.push(paths.dashboard.project.edit(id));
     },
     [router]
   );
@@ -166,20 +166,20 @@ export function UserListView() {
     <>
       <DashboardContent>
         <CustomBreadcrumbs
-          heading={t('users')}
+          heading={t('projects')}
           links={[
             { name: t('dashboard'), href: paths.dashboard.root },
-            { name: t('users'), href: paths.dashboard.user.root },
-            { name: t('users_list') },
+            { name: t('projects'), href: paths.dashboard.project.root },
+            { name: t('projects_list') },
           ]}
           action={
             <Button
               component={RouterLink}
-              href={paths.dashboard.user.new}
+              href={paths.dashboard.project.new}
               variant="contained"
               startIcon={<Iconify icon="mingcute:add-line" />}
             >
-              {t('add_user')}
+              {t('add_project')}
             </Button>
           }
           sx={{ mb: { xs: 3, md: 5 } }}
@@ -215,20 +215,20 @@ export function UserListView() {
                     }
                   >
                     {['active', 'pending', 'banned', 'rejected'].includes(tab.value)
-                      ? tableData.filter((user) => user.status === tab.value).length
+                      ? tableData.filter((project) => project.status === tab.value).length
                       : tableData.length}
                   </Label>
                 }
               />
             ))}
           </Tabs>
-          <UserTableToolbar
+          <ProjectTableToolbar
             filters={filters}
             onResetPage={table.onResetPage}
             options={{ roles: _roles }}
           />
           {canReset && (
-            <UserTableFiltersResult
+            <ProjectTableFiltersResult
               filters={filters}
               totalResults={dataFiltered.length}
               onResetPage={table.onResetPage}
@@ -280,7 +280,7 @@ export function UserListView() {
                       table.page * table.rowsPerPage + table.rowsPerPage
                     )
                     .map((row) => (
-                      <UserTableRow
+                      <ProjectTableRow
                         key={row.id}
                         row={row}
                         selected={table.selected.includes(row.id)}

@@ -75,4 +75,14 @@ export const endpoints = {
     create: '/api/admin/user',
     import: '/api/admin/import-user',
   },
+  project: {
+    list: '/api/admin/project',
+    details: '/api/admin/project',
+    search: '/api/user/project',
+    delete: '/api/admin/project',
+    put: '/api/admin/project',
+    create: '/api/admin/project',
+    import: '/api/admin/import-project',
+  },
 };
+

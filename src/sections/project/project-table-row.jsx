@@ -1,8 +1,5 @@
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';
@@ -14,26 +11,26 @@ import IconButton from '@mui/material/IconButton';
 import { useBoolean } from 'src/hooks/use-boolean';
 
 import { useTranslate } from 'src/locales';
-import { useGetCompanys } from 'src/actions/company';
+// import { useGetCompanys } from 'src/actions/company';
 
-// import { Label } from 'src/components/label';
+import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
+import { TypeList ,StatusList  , PriorityList  } from './project-data';
+
 // ----------------------------------------------------------------------
 
-export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
+export function ProjectTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
   const { t } = useTranslate();
   const popover = usePopover();
-  const { companys } = useGetCompanys();
-  const getNameById = (id) => {
-    const foundCompany = companys.find((company) => company.id === parseInt(id, 10));
-    return foundCompany ? foundCompany.name : '';
+  // const { companys } = useGetCompanys();
+  const getNameById = (id , List) => {
+    const foundCompany = List.find((company) => company.id === id.toString());
+    return foundCompany ? t(foundCompany.name) : '';
   };
-
-  // const quickEdit = useBoolean();
 
   return (
     <>
@@ -42,7 +39,7 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
           <Checkbox id={row.id} checked={selected} onClick={onSelectRow} />
         </TableCell>
 
-        <TableCell>
+        {/* <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
             <Avatar alt={row?.name} src={row?.avatarUrl} />
 
@@ -55,14 +52,41 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
               </Box>
             </Stack>
           </Stack>
+        </TableCell> */}
+
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.name}</TableCell>
+
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.desc}</TableCell>
+         <TableCell>
+          <Label
+            variant="soft"
+            color={
+              (row.status === 0 && 'success') ||
+              (row.status === 1 && 'error') ||
+              (row.status === 2 && 'warning') ||
+              'default'
+            }
+          >
+            {getNameById(row?.status , StatusList)}
+          </Label>
         </TableCell>
-
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{getNameById(row?.company_id)}</TableCell>
-
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.phone_number}</TableCell>
-
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.email}</TableCell>
-        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.national_id}</TableCell>
+        {/* <TableCell sx={{ whiteSpace: 'nowrap' }}>{getNameById(row?.status , StatusList)}</TableCell> */}
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{getNameById(row?.type , TypeList)}</TableCell>
+        <TableCell>
+          <Label
+            variant="soft"
+            color={
+              (row.priority === 0 && 'error') ||
+              (row.priority === 1 && 'default') ||
+              (row.priority === 2 && 'warning') ||
+              'default'
+            }
+          >
+            {getNameById(row?.priority , PriorityList)}
+          </Label>
+        </TableCell>
+        {/* <TableCell sx={{ whiteSpace: 'nowrap' }}>{getNameById(row?.priority , PriorityList)}</TableCell> */}
+        <TableCell sx={{ whiteSpace: 'nowrap' }}>{row?.start_date}</TableCell>
 
         {/* <TableCell>
           <Label

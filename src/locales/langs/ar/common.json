@@ -49,5 +49,20 @@
   "role": "الصلاحيات",
   "password": " كلمة المرور",
   "confirm_password": " تاكيد كلمة المرور",
-  "admin":" المدير"
+  "admin": " المدير",
+  "add_project": " اضافة مشروع",
+  "projects": " المشاريع",
+  "project_name": " اسم المشروع",
+  "description": " الوصف",
+  "type": " نوع المشروع",
+  "priority": " الاهمية",
+  "unPriority": " غير مهم",
+  "Priority": "مهم ",
+  "projects_list": " قائمة المشاريع",
+  "start_date": "تاريخ البداية",
+  "end_date": "تاريخ انتهاء العقد",
+  "": "",
+  "": "",
+  "": "",
+  "": ""
 }

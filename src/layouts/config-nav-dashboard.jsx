@@ -51,12 +51,12 @@ export const navData = [
     // subheader: 'Overview',
     items: [
       { title: 'لوحة التحكم', path: paths.dashboard.root, icon: ICONS.dashboard },
-      {
-        title: 'المشاريع',
-        path: paths.dashboard.general.analytics,
-        icon: ICONS.analytics,
-        disabled: true,
-      },
+      // {
+      //   title: 'المشاريع',
+      //   path: paths.dashboard.general.analytics,
+      //   icon: ICONS.analytics,
+      //   disabled: true,
+      // },
       // { title: 'الشركات', path: paths.dashboard.company.list, icon: ICONS.job },
       { title: 'المهام', path: paths.dashboard.kanban, icon: ICONS.course },
       { title: 'التقويم', path: paths.dashboard.calendar, icon: ICONS.calendar },
@@ -101,6 +101,25 @@ export const navData = [
           { title: 'استيراد ملفات موظفين', path: paths.dashboard.user.import, icon: ICONS.folder },
           // { title: 'Edit', path: paths.dashboard.user.demo.edit },
           // { title: 'Account', path: paths.dashboard.user.account },
+        ],
+      },
+    ],
+  },
+  {
+    // subheader: 'Management',
+    items: [
+      {
+        title: 'المشاريع',
+        path: paths.dashboard.project.list,
+        icon: ICONS.analytics,
+        children: [
+          { title: 'قائمة المشاريع', path: paths.dashboard.project.list, icon: ICONS.menuItem },
+          { title: 'إضافة مشروع', path: paths.dashboard.project.new, icon: ICONS.file },
+          {
+            title: 'استيراد ملفات مشروع',
+            path: paths.dashboard.project.import,
+            icon: ICONS.folder,
+          },
         ],
       },
     ],
