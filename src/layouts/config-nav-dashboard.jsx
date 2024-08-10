@@ -58,7 +58,7 @@ export const navData = [
       //   disabled: true,
       // },
       // { title: 'الشركات', path: paths.dashboard.company.list, icon: ICONS.job },
-      { title: 'المهام', path: paths.dashboard.kanban, icon: ICONS.course },
+      // { title: 'المهام', path: paths.dashboard.kanban, icon: ICONS.course },
       { title: 'التقويم', path: paths.dashboard.calendar, icon: ICONS.calendar },
       // { title: 'Course', path: paths.dashboard.general.course, icon: ICONS.course },
     ],
@@ -67,8 +67,23 @@ export const navData = [
     // subheader: 'Management',
     items: [
       {
+        title: 'المهام',
+        path: paths.dashboard.task.root,
+        icon: ICONS.course,
+        children: [
+          { title: 'قائمة المهام', path: paths.dashboard.task.list, icon: ICONS.menuItem },
+          { title: 'إضافة مهمة', path: paths.dashboard.task.new, icon: ICONS.file },
+        ],
+      },
+    ],
+  },
+
+  {
+    // subheader: 'Management',
+    items: [
+      {
         title: 'الشركات',
-        path: paths.dashboard.company.list,
+        path: paths.dashboard.company.root,
         icon: ICONS.job,
         children: [
           { title: 'قائمة الشركات', path: paths.dashboard.company.list, icon: ICONS.menuItem },
@@ -124,6 +139,7 @@ export const navData = [
       },
     ],
   },
+
   // {
   //   title: 'Product',
   //   path: paths.dashboard.product.root,

@@ -66,6 +66,15 @@ export const endpoints = {
     create: '/api/admin/company',
     import: '/api/admin/import-company',
   },
+  task: {
+    list: '/api/admin/task',
+    details: '/api/admin/task',
+    search: '/api/task/task',
+    delete: '/api/admin/task',
+    put: '/api/admin/task',
+    create: '/api/admin/task',
+    import: '/api/admin/import-task',
+  },
   user: {
     list: '/api/admin/user',
     details: '/api/admin/user',

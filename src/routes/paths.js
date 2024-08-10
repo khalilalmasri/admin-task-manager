@@ -132,6 +132,12 @@ export const paths = {
       import: `${ROOTS.DASHBOARD}/project/import`,
       edit: (id) => `${ROOTS.DASHBOARD}/project/${id}/edit`,
     },
+    task: {
+      root: `${ROOTS.DASHBOARD}/task`,
+      new: `${ROOTS.DASHBOARD}/task/new`,
+      list: `${ROOTS.DASHBOARD}/task/list`,
+      edit: (id) => `${ROOTS.DASHBOARD}/task/${id}/edit`,
+    },
     company: {
       root: `${ROOTS.DASHBOARD}/company`,
       new: `${ROOTS.DASHBOARD}/company/new`,
