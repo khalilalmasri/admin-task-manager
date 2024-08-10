@@ -91,7 +91,7 @@ export const navData = [
     items: [
       {
         title: 'الموظفين',
-        path: paths.dashboard.user.list,
+        path: paths.dashboard.user.root,
         icon: ICONS.user,
         children: [
           // { title: 'Profile', path: paths.dashboard.user.root },
@@ -110,7 +110,7 @@ export const navData = [
     items: [
       {
         title: 'المشاريع',
-        path: paths.dashboard.project.list,
+        path: paths.dashboard.project.root,
         icon: ICONS.analytics,
         children: [
           { title: 'قائمة المشاريع', path: paths.dashboard.project.list, icon: ICONS.menuItem },
