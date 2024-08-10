@@ -130,11 +130,7 @@ export const navData = [
         children: [
           { title: 'قائمة المشاريع', path: paths.dashboard.project.list, icon: ICONS.menuItem },
           { title: 'إضافة مشروع', path: paths.dashboard.project.new, icon: ICONS.file },
-          {
-            title: 'استيراد ملفات مشروع',
-            path: paths.dashboard.project.import,
-            icon: ICONS.folder,
-          },
+          // { title: 'استيراد ملفات مشروع',path: paths.dashboard.project.import,icon: ICONS.folder,},
         ],
       },
     ],

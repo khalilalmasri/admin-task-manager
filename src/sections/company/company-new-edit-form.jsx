@@ -127,6 +127,8 @@ export function CompanyNewEditForm({ currentCompany }) {
       }
     } catch (error) {
       console.error(error);
+      toast(error?.data);
+
       // setErro(typeof error === 'string' ? error : error.message);
     }
   });

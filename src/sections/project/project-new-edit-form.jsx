@@ -181,6 +181,8 @@ export function ProjectNewEditForm({ currentProject }) {
       }
     } catch (error) {
       console.error(error);
+      toast(error?.data);
+
       // setErro(typeof error === 'string' ? error : error.message);
     }
   });
