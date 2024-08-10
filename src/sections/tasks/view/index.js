@@ -1,11 +1,11 @@
-export * from './project-edit-view';
+export * from './task-edit-view';
 
-export * from './project-list-view';
+export * from './task-list-view';
 
-// export * from './project-cards-view';
+// export * from './task-cards-view';
 
-export * from './project-create-view';
+export * from './task-create-view';
 
-export * from './project-import-view';
+// export * from './task-import-view';
 
-// export * from './project-profile-view';
+// export * from './task-profile-view';
