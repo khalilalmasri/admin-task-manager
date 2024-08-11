@@ -257,7 +257,7 @@ export function InvoiceNewEditDetails() {
                     value={service.name}
                     onClick={() => handleSelectService(index, service.name)}
                   >
-                    {service.name}
+                    {service.title}
                   </MenuItem>
                 ))}
               </Field.Select>
