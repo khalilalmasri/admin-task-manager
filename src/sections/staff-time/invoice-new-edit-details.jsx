@@ -254,8 +254,8 @@ export function InvoiceNewEditDetails() {
                 {tasksData.map((service) => (
                   <MenuItem
                     key={service.id}
-                    value={service.name}
-                    onClick={() => handleSelectService(index, service.name)}
+                    value={service.title}
+                    onClick={() => handleSelectService(index, service.title)}
                   >
                     {service.title}
                   </MenuItem>
