@@ -1,6 +1,6 @@
 import { CONFIG } from 'src/config-global';
 
-import { InvoiceListView } from 'src/sections/staff-time/view';
+import { StaffListView } from 'src/sections/staff-time/view';
 
 
 // ----------------------------------------------------------------------
@@ -8,5 +8,5 @@ import { InvoiceListView } from 'src/sections/staff-time/view';
 export const metadata = { title: `staff-Time List | Dashboard - ${CONFIG.site.name}` };
 
 export default function Page() {
-  return <InvoiceListView />;
+  return <StaffListView />;
 }
