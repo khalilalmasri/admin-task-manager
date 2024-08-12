@@ -82,11 +82,13 @@ export function TaskListView() {
   ];
 
   const [tableData, setTableData] = useState([]);
-  const filters = useSetState({ name: '', role: [], status: 'all' });
+  const filters = useSetState({ title: '', role: [], status: 'all' });
   const { tasks, tasksEmpty, tasksLoading } = useGetTasks();
+  console.log('tasks' ,tasks);
   useEffect(() => {
     if (!tasksEmpty || !tasksLoading || tasks) {
       setTableData(tasks);
+      console.log("useeffect")
     }
   }, [tasksEmpty, tasks, tasksLoading]);
   const dataFiltered = applyFilter({
@@ -342,7 +344,7 @@ export function TaskListView() {
 }
 
 function applyFilter({ inputData, comparator, filters }) {
-  const { name, status, role } = filters;
+  const { title, status, role } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index]);
 
@@ -354,9 +356,9 @@ function applyFilter({ inputData, comparator, filters }) {
 
   inputData = stabilizedThis.map((el) => el[0]);
 
-  if (name) {
+  if (title) {
     inputData = inputData.filter(
-      (user) => user.name?.toLowerCase().indexOf(name.toLowerCase()) !== -1
+      (user) => user.title?.toLowerCase().indexOf(title.toLowerCase()) !== -1
     );
   }
 

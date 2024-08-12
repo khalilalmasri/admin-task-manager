@@ -57,12 +57,13 @@ export function InvoiceNewEditForm({ currentInvoice }) {
     () => ({
       items: currentInvoice?.items || [
         {
-          name: '',
+          user_id: '',
           // start_time: new Date().setHours(8, 0, 0, 0),
           start_time: formattedStartDate,
           end_time: formattedEndDate,
-          task: '',
+          task_id: '',
           duration: calculateTimeDifference(formattedStartDate, formattedEndDate),
+          // duration: '',
         },
       ],
     }),

@@ -1,15 +1,8 @@
 import { useCallback } from 'react';
 
 import Stack from '@mui/material/Stack';
-// import Select from '@mui/material/Select';
-// import MenuList from '@mui/material/MenuList';
-// import MenuItem from '@mui/material/MenuItem';
-// import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
-// import InputLabel from '@mui/material/InputLabel';
 import IconButton from '@mui/material/IconButton';
-// import FormControl from '@mui/material/FormControl';
-// import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { Iconify } from 'src/components/iconify';
@@ -23,7 +16,7 @@ export function TaskTableToolbar({ filters, options, onResetPage }) {
   const handleFilterName = useCallback(
     (event) => {
       onResetPage();
-      filters.setState({ title: event.target.value });
+      filters.setState({ name: event.target.value });
     },
     [filters, onResetPage]
   );
@@ -74,7 +67,7 @@ export function TaskTableToolbar({ filters, options, onResetPage }) {
         <Stack direction="row" alignItems="center" spacing={2} flexGrow={1} sx={{ width: 1 }}>
           <TextField
             fullWidth
-            value={filters.state.title}
+            value={filters.state.name}
             onChange={handleFilterName}
             placeholder="Search..."
             InputProps={{
