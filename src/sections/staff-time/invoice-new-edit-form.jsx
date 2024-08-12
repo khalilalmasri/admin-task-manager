@@ -1,4 +1,5 @@
 import { z as zod } from 'zod';
+import { toast } from 'sonner';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,79 +13,56 @@ import { useRouter } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { today, fIsAfter } from 'src/utils/format-time';
+import { useTranslate } from 'src/locales';
 
-import { _addressBooks } from 'src/_mock';
-
-import { Form, schemaHelper } from 'src/components/hook-form';
+import { Form } from 'src/components/hook-form';
 
 import { InvoiceNewEditDetails } from './invoice-new-edit-details';
 // import { InvoiceNewEditAddress } from './invoice-new-edit-address';
 // import { InvoiceNewEditStatusDate } from './invoice-new-edit-status-date';
 
-export const NewInvoiceSchema = zod
-  .object({
-    invoiceTo: zod.custom().refine((data) => data !== null, { message: 'Invoice to is required!' }),
-    createDate: schemaHelper.date({ message: { required_error: 'Create date is required!' } }),
-    dueDate: schemaHelper.date({ message: { required_error: 'Due date is required!' } }),
-    items: zod
-      .array(
-        zod.object({
-          title: zod.string().min(1, { message: 'Title is required!' }),
-          service: zod.string().min(1, { message: 'Service is required!' }),
-          quantity: zod.number().min(1, { message: 'Quantity must be more than 0' }),
-          // Not required
-          price: zod.number(),
-          total: zod.number(),
-          description: zod.string(),
-        })
-      )
-      .optional(),
-    // Not required
-    taxes: zod.number(),
-    status: zod.string(),
-    discount: zod.number(),
-    shipping: zod.number(),
-    totalAmount: zod.number(),
-    invoiceNumber: zod.string(),
-    invoiceFrom: zod.custom().nullable(),
-  })
-  .refine((data) => !fIsAfter(data.createDate, data.dueDate), {
-    message: 'Due date cannot be earlier than create date!',
-    path: ['dueDate'],
-  });
+export const NewInvoiceSchema = zod.object({
+  items: zod.array(zod.object({})).optional(),
+});
 
 // ----------------------------------------------------------------------
 
+const StartDate = new Date();
+StartDate.setHours(8, 0, 0, 0);
+const formattedStartDate = `${StartDate.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Riyadh' }).replace(', ', 'T')}+03:00`;
+const EndDate = new Date();
+EndDate.setHours(17, 0, 0, 0);
+const formattedEndDate = `${EndDate.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Riyadh' }).replace(', ', 'T')}+03:00`;
+function calculateTimeDifference(startTime, endTime) {
+  const start = new Date(startTime);
+  const end = new Date(endTime);
+
+  const diffInMilliseconds = end - start;
+  const diffInMinutes = diffInMilliseconds / (1000 * 60);
+
+  const hours = Math.floor(diffInMinutes / 60);
+  const minutes = Math.floor(diffInMinutes % 60);
+
+  // return { hours, minutes };
+  return `${hours}س:${minutes}د`;
+}
 export function InvoiceNewEditForm({ currentInvoice }) {
   const router = useRouter();
-
+  const { t } = useTranslate();
   const loadingSave = useBoolean();
 
   const loadingSend = useBoolean();
 
   const defaultValues = useMemo(
     () => ({
-      invoiceNumber: currentInvoice?.invoiceNumber || 'INV-1990',
-      createDate: currentInvoice?.createDate || today(),
-      dueDate: currentInvoice?.dueDate || null,
-      taxes: currentInvoice?.taxes || 0,
-      shipping: currentInvoice?.shipping || 0,
-      status: currentInvoice?.status || 'draft',
-      discount: currentInvoice?.discount || 0,
-      invoiceFrom: currentInvoice?.invoiceFrom || _addressBooks[0],
-      invoiceTo: currentInvoice?.invoiceTo || null,
-      totalAmount: currentInvoice?.totalAmount || 0,
       items: currentInvoice?.items || [
         {
-          title: '',
-          description: '',
-          start_date: new Date().setHours(8, 0, 0, 0),
-          end_date: new Date().setHours(5, 0, 0, 0),
-          service: '',
-          quantity: 1,
-          price: 0,
-          total: 0,
+          name: '',
+          // start_time: new Date().setHours(8, 0, 0, 0),
+          start_time: formattedStartDate,
+          end_time: formattedEndDate,
+          task: '',
+          duration: calculateTimeDifference(formattedStartDate, formattedEndDate),
         },
       ],
     }),
@@ -96,42 +74,76 @@ export function InvoiceNewEditForm({ currentInvoice }) {
     resolver: zodResolver(NewInvoiceSchema),
     defaultValues,
   });
-
+  console.log('dataout....................', methods.getValues());
   const {
     reset,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
-
-  const handleSaveAsDraft = handleSubmit(async (data) => {
-    loadingSave.onTrue();
-
+  const onSubmit = handleSubmit(async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // console.log('data =>>>>>>', data);
+      const newData = {
+        items: methods.getValues().items,
+      };
+      // console.log('after......sssss....data =>>>>>>');
+
+      const existingDataString = localStorage.getItem('taskData');
+      const existingData = existingDataString ? JSON.parse(existingDataString) : { items: [] };
+
+      // Append new items to existing items
+      existingData.items = [...existingData.items, ...newData.items];
+
+      // Save updated data back to local storage
+      localStorage.setItem('taskData', JSON.stringify(existingData));
+      // const response = await axios.post(endpoints.task.create, newData);
+      // console.log('next.........................data =>>>>>>');
       reset();
-      loadingSave.onFalse();
-      router.push(paths.dashboard.invoice.root);
-      console.info('DATA', JSON.stringify(data, null, 2));
+
+      // if (response.status) {
+      toast('update_success');
+      router.push(paths.dashboard.staff.list);
+      // } else {
+      // toast(response.statusText);
+      // console.log(response.statusText);
+      // }
     } catch (error) {
       console.error(error);
-      loadingSave.onFalse();
+      // toast(error?.data);
+      toast('some thing error');
+      // setErro(typeof error === 'string' ? error : error.message);
     }
   });
+  // const handleSaveAsDraft = handleSubmit(async (data) => {
+  //   loadingSave.onTrue();
 
-  const handleCreateAndSend = handleSubmit(async (data) => {
-    loadingSend.onTrue();
+  //   try {
+  //     await new Promise((resolve) => setTimeout(resolve, 500));
+  //     reset();
+  //     loadingSave.onFalse();
+  //     router.push(paths.dashboard.invoice.root);
+  //     console.info('DATA', JSON.stringify(data, null, 2));
+  //   } catch (error) {
+  //     console.error(error);
+  //     loadingSave.onFalse();
+  //   }
+  // });
 
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-      loadingSend.onFalse();
-      router.push(paths.dashboard.invoice.root);
-      console.info('DATA', JSON.stringify(data, null, 2));
-    } catch (error) {
-      console.error(error);
-      loadingSend.onFalse();
-    }
-  });
+  // const handleCreateAndSend = handleSubmit(async (data) => {
+  //   loadingSend.onTrue();
+
+  //   try {
+  //     await new Promise((resolve) => setTimeout(resolve, 500));
+  //     reset();
+  //     loadingSend.onFalse();
+  //     router.push(paths.dashboard.invoice.root);
+  //     console.info('DATA', JSON.stringify(data, null, 2));
+  //   } catch (error) {
+  //     console.error(error);
+  //     loadingSend.onFalse();
+  //   }
+  // });
 
   return (
     <Form methods={methods}>
@@ -158,9 +170,10 @@ export function InvoiceNewEditForm({ currentInvoice }) {
           size="large"
           variant="contained"
           loading={loadingSend.value && isSubmitting}
-          onClick={handleCreateAndSend}
+          // onClick={handleCreateAndSend}
+          onClick={onSubmit}
         >
-          {currentInvoice ? 'Update' : 'Create'} & send
+          {currentInvoice ? t('Update') : t('Create')}
         </LoadingButton>
       </Stack>
     </Form>

@@ -162,7 +162,10 @@ export const paths = {
       },
     },
     staff:{
-      root: `${ROOTS.DASHBOARD}/staff`},
+      root: `${ROOTS.DASHBOARD}/staff`,
+      list: `${ROOTS.DASHBOARD}/staff/list`,
+      new: `${ROOTS.DASHBOARD}/staff/new`,
+    },
     invoice: {
       root: `${ROOTS.DASHBOARD}/invoice`,
       new: `${ROOTS.DASHBOARD}/invoice/new`,

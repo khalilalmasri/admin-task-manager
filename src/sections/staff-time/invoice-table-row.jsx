@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -14,10 +16,11 @@ import ListItemText from '@mui/material/ListItemText';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
-import { fCurrency } from 'src/utils/format-number';
 import { fDate, fTime } from 'src/utils/format-time';
 
-import { Label } from 'src/components/label';
+import { useGetUsers } from 'src/actions/user';
+import { useGetTasks } from 'src/actions/task';
+
 import { Iconify } from 'src/components/iconify';
 import { ConfirmDialog } from 'src/components/custom-dialog';
 import { usePopover, CustomPopover } from 'src/components/custom-popover';
@@ -26,9 +29,29 @@ import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditRow, onDeleteRow }) {
   const confirm = useBoolean();
-
   const popover = usePopover();
-
+  const { users } = useGetUsers();
+  const { tasks } = useGetTasks();
+  const [usersData, setUsersData] = useState([]);
+  const [tasksData, setTasksData] = useState([]);
+  useEffect(() => {
+    if (tasks) {
+      setTasksData(tasks);
+    }
+  }, [tasks]);
+  useEffect(() => {
+    if (users) {
+      setUsersData(users);
+    }
+  }, [users]);
+  const getUserNameById = (id, List) => {
+    const foundCompany = List.find((company) => company.id === id);
+    return foundCompany ? foundCompany.name : '';
+  };
+  const getTaskNameById = (id, List) => {
+    const foundCompany = List.find((company) => company.id === id);
+    return foundCompany ? foundCompany.title : '';
+  };
   return (
     <>
       <TableRow hover selected={selected}>
@@ -36,19 +59,19 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
           <Checkbox
             checked={selected}
             onClick={onSelectRow}
-            inputProps={{ id: `row-checkbox-${row.id}`, 'aria-label': `Row checkbox` }}
+            inputProps={{ id: `row-checkbox-${row.index}`, 'aria-label': `Row checkbox` }}
           />
         </TableCell>
 
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Avatar alt={row.invoiceTo.name}>{row.invoiceTo.name.charAt(0).toUpperCase()}</Avatar>
+            <Avatar alt={row.invoiceTo?.name}>{row.invoiceTo?.name.charAt(0).toUpperCase()}</Avatar>
 
             <ListItemText
               disableTypography
               primary={
                 <Typography variant="body2" noWrap>
-                  {row.invoiceTo.name}
+                  {/* {getNameById(row?.invoiceTo?.name, usersData)} */}
                 </Typography>
               }
               secondary={
@@ -58,7 +81,7 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
                   onClick={onViewRow}
                   sx={{ color: 'text.disabled', cursor: 'pointer' }}
                 >
-                  {row.invoiceNumber}
+                  {getUserNameById(row?.name, usersData)}
                 </Link>
               }
             />
@@ -67,8 +90,8 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
 
         <TableCell>
           <ListItemText
-            primary={fDate(row.createDate)}
-            secondary={fTime(row.createDate)}
+            primary={fDate(row?.start_time)}
+            secondary={fTime(row?.start_time)}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
             secondaryTypographyProps={{ mt: 0.5, component: 'span', typography: 'caption' }}
           />
@@ -76,18 +99,19 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
 
         <TableCell>
           <ListItemText
-            primary={fDate(row.dueDate)}
-            secondary={fTime(row.dueDate)}
+            primary={fDate(row?.end_time)}
+            secondary={fTime(row?.end_time)}
             primaryTypographyProps={{ typography: 'body2', noWrap: true }}
             secondaryTypographyProps={{ mt: 0.5, component: 'span', typography: 'caption' }}
           />
         </TableCell>
 
-        <TableCell>{fCurrency(row.totalAmount)}</TableCell>
+        {/* <TableCell>{fCurrency(row?.duration)}</TableCell> */}
+        <TableCell>{row?.duration}</TableCell>
 
-        <TableCell align="center">{row.sent}</TableCell>
+        <TableCell align="center"> {getTaskNameById(row?.task, tasksData)}</TableCell>
 
-        <TableCell>
+        {/* <TableCell>
           <Label
             variant="soft"
             color={
@@ -99,7 +123,7 @@ export function InvoiceTableRow({ row, selected, onSelectRow, onViewRow, onEditR
           >
             {row.status}
           </Label>
-        </TableCell>
+        </TableCell> */}
 
         <TableCell align="right" sx={{ px: 1 }}>
           <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>

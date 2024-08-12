@@ -1,21 +1,19 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import { MenuItem } from '@mui/material';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
-import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 
-import { fCurrency } from 'src/utils/format-number';
-
+import { useTranslate } from 'src/locales';
 import { useGetUsers } from 'src/actions/user';
 import { useGetTasks } from 'src/actions/task';
-import { INVOICE_SERVICE_OPTIONS } from 'src/_mock';
 
-import { Field } from 'src/components/hook-form';
 import { Iconify } from 'src/components/iconify';
+import { Field } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -29,15 +27,15 @@ export function InvoiceNewEditDetails() {
   const [tasksData, setTasksData] = useState([]);
   const values = watch();
 
-  const totalOnRow = values.items.map((item) => item.quantity * item.price);
+  // const totalOnRow = values.items.map((item) => item.quantity * item.price);
 
-  const subtotal = totalOnRow.reduce((acc, num) => acc + num, 0);
+  // const subtotal = totalOnRow.reduce((acc, num) => acc + num, 0);
 
-  const totalAmount = subtotal - values.discount - values.shipping + values.taxes;
+  // const totalAmount = subtotal - values.discount - values.shipping + values.taxes;
 
-  useEffect(() => {
-    setValue('totalAmount', totalAmount);
-  }, [setValue, totalAmount]);
+  // useEffect(() => {
+  //   setValue('totalAmount', totalAmount);
+  // }, [setValue, totalAmount]);
   useEffect(() => {
     if (tasks) {
       setTasksData(tasks);
@@ -48,106 +46,135 @@ export function InvoiceNewEditDetails() {
       setUsersData(users);
     }
   }, [users]);
+  const { t } = useTranslate();
 
+  const StartDate = new Date();
+  StartDate.setHours(8, 0, 0, 0);
+  const formattedStartDate = `${StartDate.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Riyadh' }).replace(', ', 'T')}+03:00`;
+  const EndDate = new Date();
+  EndDate.setHours(17, 0, 0, 0);
+  const formattedEndDate = `${EndDate.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Riyadh' }).replace(', ', 'T')}+03:00`;
+  function calculateTimeDifference(startTime, endTime) {
+    const start = new Date(startTime);
+    const end = new Date(endTime);
+
+    const diffInMilliseconds = end - start;
+    const diffInMinutes = diffInMilliseconds / (1000 * 60);
+
+    const hours = Math.floor(diffInMinutes / 60);
+    const minutes = Math.floor(diffInMinutes % 60);
+
+    // return { hours, minutes };
+    return `${hours}س:${minutes}د`;
+  }
+  const startTime = formattedStartDate;
+  const endTime = formattedEndDate;
+
+  const { hours, minutes } = calculateTimeDifference(startTime, endTime);
+  // console.log(`الفرق: ${hours} ساعات و ${minutes} دقيقة`);
+  // console.log(`${hours}:${minutes}`);
+  // console.log(formattedDate);
   const handleAdd = () => {
     append({
-      title: '',
-      description: '',
-      // start_date:'08:00',
-      start_date: new Date().setHours(8, 0, 0, 0),
-      end_date: new Date().setHours(5, 0, 0, 0),
-      service: '',
-      quantity: 1,
-      price: 0,
-      total: 0,
+      name: '',
+      // start_time: new Date().setHours(8, 0, 0, 0),
+      start_time: formattedStartDate,
+      // end_time: new Date().setHours(17, 0, 0, 0),
+      end_time: formattedEndDate,
+      task: '',
+      duration: calculateTimeDifference(formattedStartDate, formattedEndDate),
     });
   };
-
+  console.log('values', values.items[0]?.start_time);
   const handleRemove = (index) => {
     remove(index);
   };
-
-  const handleClearService = useCallback(
-    (index) => {
-      setValue(`items[${index}].quantity`, 1);
-      setValue(`items[${index}].price`, 0);
-      setValue(`items[${index}].total`, 0);
-    },
-    [setValue]
+  console.log(
+    '.....................>>>>>>>>',
+    calculateTimeDifference(formattedStartDate, formattedEndDate)
   );
 
-  const handleSelectService = useCallback(
-    (index, option) => {
-      setValue(
-        `items[${index}].price`,
-        INVOICE_SERVICE_OPTIONS.find((service) => service.name === option)?.price
-      );
-      setValue(
-        `items[${index}].total`,
-        values.items.map((item) => item.quantity * item.price)[index]
-      );
-    },
-    [setValue, values.items]
-  );
+  // const handleClearService = useCallback(
+  //   (index) => {
+  //     setValue(`items[${index}].quantity`, 1);
+  //     setValue(`items[${index}].price`, 0);
+  //     setValue(`items[${index}].total`, 0);
+  //   },
+  //   [setValue]
+  // );
 
-  const handleChangeQuantity = useCallback(
-    (event, index) => {
-      setValue(`items[${index}].quantity`, Number(event.target.value));
-      setValue(
-        `items[${index}].total`,
-        values.items.map((item) => item.quantity * item.price)[index]
-      );
-    },
-    [setValue, values.items]
-  );
+  // const handleSelectService = useCallback(
+  //   (index, option) => {
+  //     setValue(
+  //       `items[${index}].price`,
+  //       INVOICE_SERVICE_OPTIONS.find((service) => service.name === option)?.price
+  //     );
+  //     setValue(
+  //       `items[${index}].total`,
+  //       values.items.map((item) => item.quantity * item.price)[index]
+  //     );
+  //   },
+  //   [setValue, values.items]
+  // );
 
-  const handleChangePrice = useCallback(
-    (event, index) => {
-      setValue(`items[${index}].price`, Number(event.target.value));
-      setValue(
-        `items[${index}].total`,
-        values.items.map((item) => item.quantity * item.price)[index]
-      );
-    },
-    [setValue, values.items]
-  );
+  // const handleChangeQuantity = useCallback(
+  //   (event, index) => {
+  //     setValue(`items[${index}].quantity`, Number(event.target.value));
+  //     setValue(
+  //       `items[${index}].total`,
+  //       values.items.map((item) => item.quantity * item.price)[index]
+  //     );
+  //   },
+  //   [setValue, values.items]
+  // );
 
-  const renderTotal = (
-    <Stack
-      spacing={2}
-      alignItems="flex-end"
-      sx={{ mt: 3, textAlign: 'right', typography: 'body2' }}
-    >
-      <Stack direction="row">
-        <Box sx={{ color: 'text.secondary' }}>Subtotal</Box>
-        <Box sx={{ width: 160, typography: 'subtitle2' }}>{fCurrency(subtotal) || '-'}</Box>
-      </Stack>
+  // const handleChangePrice = useCallback(
+  //   (event, index) => {
+  //     setValue(`items[${index}].price`, Number(event.target.value));
+  //     setValue(
+  //       `items[${index}].total`,
+  //       values.items.map((item) => item.quantity * item.price)[index]
+  //     );
+  //   },
+  //   [setValue, values.items]
+  // );
 
-      <Stack direction="row">
-        <Box sx={{ color: 'text.secondary' }}>Shipping</Box>
-        <Box sx={{ width: 160, ...(values.shipping && { color: 'error.main' }) }}>
-          {values.shipping ? `- ${fCurrency(values.shipping)}` : '-'}
-        </Box>
-      </Stack>
+  // const renderTotal = (
+  //   <Stack
+  //     spacing={2}
+  //     alignItems="flex-end"
+  //     sx={{ mt: 3, textAlign: 'right', typography: 'body2' }}
+  //   >
+  //     <Stack direction="row">
+  //       <Box sx={{ color: 'text.secondary' }}>Subtotal</Box>
+  //       <Box sx={{ width: 160, typography: 'subtitle2' }}>{fCurrency(subtotal) || '-'}</Box>
+  //     </Stack>
 
-      <Stack direction="row">
-        <Box sx={{ color: 'text.secondary' }}>Discount</Box>
-        <Box sx={{ width: 160, ...(values.discount && { color: 'error.main' }) }}>
-          {values.discount ? `- ${fCurrency(values.discount)}` : '-'}
-        </Box>
-      </Stack>
+  //     <Stack direction="row">
+  //       <Box sx={{ color: 'text.secondary' }}>Shipping</Box>
+  //       <Box sx={{ width: 160, ...(values.shipping && { color: 'error.main' }) }}>
+  //         {values.shipping ? `- ${fCurrency(values.shipping)}` : '-'}
+  //       </Box>
+  //     </Stack>
 
-      <Stack direction="row">
-        <Box sx={{ color: 'text.secondary' }}>Taxes</Box>
-        <Box sx={{ width: 160 }}>{values.taxes ? fCurrency(values.taxes) : '-'}</Box>
-      </Stack>
+  //     <Stack direction="row">
+  //       <Box sx={{ color: 'text.secondary' }}>Discount</Box>
+  //       <Box sx={{ width: 160, ...(values.discount && { color: 'error.main' }) }}>
+  //         {values.discount ? `- ${fCurrency(values.discount)}` : '-'}
+  //       </Box>
+  //     </Stack>
 
-      <Stack direction="row" sx={{ typography: 'subtitle1' }}>
-        <div>Total</div>
-        <Box sx={{ width: 160 }}>{fCurrency(totalAmount) || '-'}</Box>
-      </Stack>
-    </Stack>
-  );
+  //     <Stack direction="row">
+  //       <Box sx={{ color: 'text.secondary' }}>Taxes</Box>
+  //       <Box sx={{ width: 160 }}>{values.taxes ? fCurrency(values.taxes) : '-'}</Box>
+  //     </Stack>
+
+  //     <Stack direction="row" sx={{ typography: 'subtitle1' }}>
+  //       <div>Total</div>
+  //       <Box sx={{ width: 160 }}>{fCurrency(totalAmount) || '-'}</Box>
+  //     </Stack>
+  //   </Stack>
+  // );
 
   return (
     <Box sx={{ p: 3 }}>
@@ -159,47 +186,36 @@ export function InvoiceNewEditDetails() {
         {fields.map((item, index) => (
           <Stack key={item.id} alignItems="flex-end" spacing={1.5}>
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ width: 1 }}>
-              {/* <Field.Text
-                size="small"
-                name={`items[${index}].title`}
-                label="أسم الموظف"
-                InputLabelProps={{ shrink: true }}
-                sx={{ maxWidth: { md: 180 } }}
-              /> */}
               <Field.Select
-                name={`items[${index}].title`}
+                name={`items[${index}].name`}
                 size="small"
                 label=" أسم الموظف"
                 InputLabelProps={{ shrink: true }}
                 sx={{ maxWidth: { md: 180 } }}
               >
-                <MenuItem
-                  value=""
-                  onClick={() => handleClearService(index)}
-                  sx={{ fontStyle: 'italic', color: 'text.secondary' }}
-                >
-                  None
-                </MenuItem>
-
-                <Divider sx={{ borderStyle: 'dashed' }} />
-
                 {usersData.map((service) => (
                   <MenuItem
                     key={service.id}
-                    value={service.name}
-                    onClick={() => handleSelectService(index, service.name)}
+                    value={service.id}
+                    // onClick={() => handleSelectService(index, service.name)}
                   >
                     {service.name}
                   </MenuItem>
                 ))}
               </Field.Select>
+              {/* <RHFAutocomplete
+                name={`items[${index}].name`}
+                label={t('user_name')}
+                options={usersData}
+                getOptionLabel={(option) => t(option.name)}
+                isOptionEqualToValue={(option, value) => option.id === value}
+              /> */}
               <Field.MobileDateTimePicker
-                type="time"
-                format="hh:mm"
-                name={`items[${index}].start_date`}
+                type="datetime"
+                format="hh:mm a "
+                openTo="hours"
+                name={`items[${index}].start_time`}
                 label="وقت الدخول"
-                // defaultValue="08:00"
-                // InputLabelProps={{ shrink: true }}
                 sx={{
                   maxWidth: { md: 180 },
                   '& .MuiInputBase-root': { height: '40px' },
@@ -207,11 +223,11 @@ export function InvoiceNewEditDetails() {
                 }}
               />
               <Field.MobileDateTimePicker
-                type="time"
-                format="HH:mm"
-                name={`items[${index}].end_date`}
+                type="datetime"
+                format="hh:mm a "
+                openTo="hours"
+                name={`items[${index}].end_time`}
                 label="وقت الخروج"
-                // defaultValue="08:00"
                 InputLabelProps={{ shrink: true }}
                 sx={{
                   maxWidth: { md: 180 },
@@ -219,107 +235,53 @@ export function InvoiceNewEditDetails() {
                   '& .MuiInputBase-input': { padding: '10px 14px' },
                 }}
               />
-              {/* <Field.Text
-                size="small"
-                name={`items[${index}].description`}
-                label="وقت الدخول"
-                InputLabelProps={{ shrink: true }}
-                sx={{ maxWidth: { md: 180 } }}
+              {/* <RHFAutocomplete
+                name={`items[${index}].task`}
+                label={t('task_name')}
+                options={tasksData}
+                getOptionLabel={(option) => t(option.title)}
+                isOptionEqualToValue={(option, value) => option.id === value}
               /> */}
-              {/* <Field.Text
+              <Field.Text
+                name={`items[${index}].duration`}
                 size="small"
-                name={`items[${index}].description`}
-                label="وقت الخروج"
-                InputLabelProps={{ shrink: true }}
-                sx={{ maxWidth: { md: 180 } }}
-              /> */}
-
+                disabled
+                label={t('duration')}
+                Value={calculateTimeDifference(
+                  values.items[index]?.start_time,
+                  values.items[index]?.end_time
+                )}
+                sx={{
+                  maxWidth: { md: 80 },
+                  '& .MuiInputBase-root': { height: '40px' },
+                  '& .MuiInputBase-input': { padding: '10px 14px' },
+                }}
+              />
               <Field.Select
-                name={`items[${index}].service`}
+                name={`items[${index}].task`}
                 size="small"
-                label=" المهمة"
+                label={t('task_name')}
                 InputLabelProps={{ shrink: true }}
                 sx={{ maxWidth: { md: 180 } }}
               >
-                <MenuItem
-                  value=""
-                  onClick={() => handleClearService(index)}
-                  sx={{ fontStyle: 'italic', color: 'text.secondary' }}
-                >
-                  None
-                </MenuItem>
-
-                <Divider sx={{ borderStyle: 'dashed' }} />
-
                 {tasksData.map((service) => (
                   <MenuItem
                     key={service.id}
-                    value={service.title}
-                    onClick={() => handleSelectService(index, service.title)}
+                    value={service.id}
+                    // onClick={() => handleSelectService(index, service.title)}
                   >
                     {service.title}
                   </MenuItem>
                 ))}
               </Field.Select>
 
-              {/* <Field.Text
-                size="small"
-                type="number"
-                name={`items[${index}].quantity`}
-                label="Quantity"
-                placeholder="0"
-                onChange={(event) => handleChangeQuantity(event, index)}
-                InputLabelProps={{ shrink: true }}
-                sx={{ maxWidth: { md: 96 } }}
-              /> */}
-
-              {/* <Field.Text
-                size="small"
-                type="number"
-                name={`items[${index}].price`}
-                label="Price"
-                placeholder="0.00"
-                onChange={(event) => handleChangePrice(event, index)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Box sx={{ typography: 'subtitle2', color: 'text.disabled' }}>$</Box>
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{ maxWidth: { md: 96 } }}
-              /> */}
-
-              {/* <Field.Text
-                disabled
-                size="small"
-                type="number"
-                name={`items[${index}].total`}
-                label="Total"
-                placeholder="0.00"
-                value={values.items[index].total === 0 ? '' : values.items[index].total.toFixed(2)}
-                onChange={(event) => handleChangePrice(event, index)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Box sx={{ typography: 'subtitle2', color: 'text.disabled' }}>$</Box>
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  maxWidth: { md: 104 },
-                  [`& .${inputBaseClasses.input}`]: {
-                    textAlign: { md: 'right' },
-                  },
-                }}
-              /> */}
               <Button
                 size="small"
                 color="error"
                 startIcon={<Iconify icon="solar:trash-bin-trash-bold" />}
                 onClick={() => handleRemove(index)}
               >
-                حذف
+                {t('delete')}
               </Button>
             </Stack>
           </Stack>

@@ -60,8 +60,26 @@ export const navData = [
       // { title: 'الشركات', path: paths.dashboard.company.list, icon: ICONS.job },
       // { title: 'المهام', path: paths.dashboard.kanban, icon: ICONS.course },
       { title: 'التقويم', path: paths.dashboard.calendar, icon: ICONS.calendar },
-      { title: 'تسجيل الحضور', path: paths.dashboard.staff.root, icon: ICONS.file },
+      // { title: 'تسجيل الحضور', path: paths.dashboard.staff.root, icon: ICONS.file },
       // { title: 'Course', path: paths.dashboard.general.course, icon: ICONS.course },
+    ],
+  },
+  {
+    // subheader: 'Management',
+    items: [
+      {
+        title: 'الحضور والانصراف',
+        path: paths.dashboard.staff.root,
+        icon: ICONS.file,
+        children: [
+          {
+            title: 'جدول الحضور والانصراف ',
+            path: paths.dashboard.staff.list,
+            icon: ICONS.menuItem,
+          },
+          { title: ' تسجيل الحضور', path: paths.dashboard.staff.new, icon: ICONS.file },
+        ],
+      },
     ],
   },
   {

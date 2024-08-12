@@ -28,7 +28,7 @@ export function TaskTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
   const popover = usePopover();
   const getNameById = (id, List) => {
     const foundCompany = List.find((company) => company.id === id?.toString());
-    return foundCompany ? t(foundCompany.name) : '';
+    return foundCompany ? t(foundCompany.name) : ''; 
   };
   function shortenText(text) {
     if (text?.length > 15) {

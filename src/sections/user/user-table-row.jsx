@@ -28,7 +28,7 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
   const { t } = useTranslate();
   const popover = usePopover();
   const { companys } = useGetCompanys();
-  const getNameById = (id) => {
+  const getNameById = (id) => { 
     const foundCompany = companys.find((company) => company.id === parseInt(id, 10));
     return foundCompany ? foundCompany.name : '';
   };
