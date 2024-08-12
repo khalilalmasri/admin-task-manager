@@ -1,6 +1,6 @@
 import { CONFIG } from 'src/config-global';
 
-import {  StaffListView } from 'src/sections/staff-time/view';
+import { StaffListView } from 'src/sections/staff-time/view';
 
 
 // ----------------------------------------------------------------------
