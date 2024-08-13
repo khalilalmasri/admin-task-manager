@@ -1,7 +1,7 @@
-export * from './invoice-list-view';
+export * from './staff-list-view';
 
-// export * from './invoice-edit-view';
+// export * from './staff-edit-view';
 
-export * from './invoice-create-view';
+export * from './staff-create-view';
 
-// export * from './invoice-details-view';
+// export * from './staff-details-view';

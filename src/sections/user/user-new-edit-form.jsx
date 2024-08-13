@@ -97,14 +97,14 @@ export function UserNewEditForm({ currentUser }) {
       national_id: currentUser?.national_id || '',
       password: currentUser?.password || '',
       // role: RoleList.find((role) => role.id === currentUser?.role?.toString()) || null,
-      company_id: currentUser?.company_id
-        ? {
-            id: currentUser?.company_id.toString(),
-            name: companyList.find((company) => company.id === currentUser?.company_id)?.name,
-          }
-        : null,
+      company_id: currentUser?.company || null,
+      // ? {
+      //     id: currentUser?.company_id.toString(),
+      //     name: companyList.find((company) => company.id === currentUser?.company_id)?.name,
+      //   }
+      // : null,
     }),
-    [currentUser, companyList]
+    [currentUser]
   );
   // console.log('Token:', localStorage.getItem(STORAGE_KEY));
   // console.log('Endpoint:', endpoints.auth.signIn);

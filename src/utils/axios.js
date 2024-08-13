@@ -32,7 +32,7 @@ export const fetcher = async (args) => {
 // ----------------------------------------------------------------------
 
 export const endpoints = {
-  chat: '/api/chat',
+  
   kanban: '/api/kanban',
   calendar: '/api/calendar',
   auth: {
@@ -93,5 +93,15 @@ export const endpoints = {
     create: '/api/admin/project',
     import: '/api/admin/import-project',
   },
+  staff: {
+    list: '/api/admin/attendance',
+    details: '/api/admin/attendance',
+    search: '/api/attendance/attendance',
+    delete: '/api/admin/attendance',
+    put: '/api/admin/attendance',
+    create: '/api/admin/attendance',
+    import: '/api/admin/import-attendance',
+  },
+  chat: '/api/chat',
 };
 

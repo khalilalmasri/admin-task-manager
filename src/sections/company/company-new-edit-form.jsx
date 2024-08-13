@@ -24,7 +24,9 @@ import { useTranslate } from 'src/locales';
 import { Label } from 'src/components/label';
 import { toast } from 'src/components/snackbar';
 import { Iconify } from 'src/components/iconify';
-import { Form, Field } from 'src/components/hook-form';
+import { Form, Field, RHFAutocomplete } from 'src/components/hook-form';
+
+import { TypeList, StatusList } from '../project/project-data';
 
 // ----------------------------------------------------------------------
 
@@ -43,13 +45,21 @@ export const createNewCompanySchema = (isEditMode) =>
     address: zod.string().min(1, { message: 'address is required!' }),
     // contract_duration: zod.number({ message: 'contract_duration is required!' }),
     contract_duration: zod.string(),
-    status: zod.enum(['0', '1', '2', '3'], {
-      errorMap: () => ({ message: 'يجب اختيار نوع العقد من القيم المتاحة' }),
+    // status: zod.enum(['0', '1', '2', '3'], {
+    //   errorMap: () => ({ message: 'يجب اختيار نوع العقد من القيم المتاحة' }),
+    // }),
+    status: zod.object({
+      id: zod.string(),
+      name: zod.string(),
     }),
     scope: zod.string().min(1, { message: 'scope is required!' }),
     // contract_type: zod.string({ message: 'contract_type is required!' }),
-    contract_type: zod.enum(['1', '2', '3'], {
-      errorMap: () => ({ message: 'يجب اختيار نوع العقد من القيم المتاحة' }),
+    // contract_type: zod.enum(['1', '2', '3'], {
+    //   errorMap: () => ({ message: 'يجب اختيار نوع العقد من القيم المتاحة' }),
+    // }),
+    contract_type: zod.object({
+      id: zod.string(),
+      name: zod.string(),
     }),
     admin_name: isEditMode
       ? zod.string().optional()
@@ -95,9 +105,12 @@ export function CompanyNewEditForm({ currentCompany }) {
       register_number: currentCompany?.register_number || '',
       address: currentCompany?.address || '',
       contract_duration: currentCompany?.contract_duration?.toString() || '',
-      status: currentCompany?.status.toString() || 0,
+      // status: currentCompany?.status.toString() || 0,
+      status:
+        StatusList.find((status) => status?.id === currentCompany?.status?.toString()) || null,
       scope: currentCompany?.scope || '',
-      contract_type: currentCompany?.contract_type?.toString() || '',
+      contract_type:
+        TypeList.find((type) => type?.id === currentCompany?.contract_type?.toString()) || null,
       admin_name: currentCompany?.admin_name || '',
       admin_email: currentCompany?.admin_email || '',
       admin_phone_number: currentCompany?.admin_phone_number || '',
@@ -135,15 +148,12 @@ export function CompanyNewEditForm({ currentCompany }) {
         register_number: data.register_number,
         address: data.address,
         contract_duration: data.contract_duration,
-        status: parseInt(data.status, 10),
+        // status: parseInt(data.status, 10),
+        status: data.status.id,
+
         scope: data.scope,
-        contract_type: data.contract_type,
-        admin_name: data.admin_name,
-        admin_email: data.admin_email,
-        admin_phone_number: data.admin_phone_number,
-        admin_national_id: data.admin_national_id,
-        admin_password: data.admin_password,
-        admin_password_confirmation: data.admin_password,
+        // contract_type: data.contract_type,
+        contract_type: data.contract_type.id,
       };
       const editData = {
         name: data.name,
@@ -152,9 +162,11 @@ export function CompanyNewEditForm({ currentCompany }) {
         register_number: data.register_number,
         address: data.address,
         contract_duration: data.contract_duration,
-        status: parseInt(data.status, 10),
+        // status: parseInt(data.status, 10),
+        status: data.status.id,
         scope: data.scope,
-        contract_type: data.contract_type,
+        // contract_type: data.contract_type,
+        contract_type: data.contract_type.id,
         admin_name: data.admin_name,
         admin_email: data.admin_email,
         admin_phone_number: data.admin_phone_number,
@@ -188,20 +200,20 @@ export function CompanyNewEditForm({ currentCompany }) {
       <Grid container spacing={3}>
         <Grid xs={12} md={4}>
           <Card sx={{ pt: 10, pb: 5, px: 3 }}>
-            {currentCompany && (
+            {/* {currentCompany && (
               <Label
                 color={
                   // (values.status === 'active' && 'success') ||
-                  (values.status === '1' && 'success') ||
+                  (values.status === 0 && 'success') ||
                   // (values.status === 'banned' && 'error') ||
-                  (values.status === '0' && 'default') ||
+                  (values.status === 1 && 'default') ||
                   'warning'
                 }
                 sx={{ position: 'absolute', top: 24, right: 24 }}
               >
-                {values.status === '1' ? t('active') : t('rejected')}
+                {values.status === 0 ? t('active') : t('rejected')}
               </Label>
-            )}
+            )} */}
 
             <Box sx={{ mb: 5 }}>
               <Field.UploadAvatar
@@ -308,8 +320,22 @@ export function CompanyNewEditForm({ currentCompany }) {
               <Field.Text name="register_number" label={t('register_number')} />
               <Field.Text name="address" label={t('address')} />
               <Field.Text name="scope" label={t('scope')} />
-              <Field.Text name="contract_type" label={t('contract_type')} />
-              <Field.Text name="status" label={t('status')} />
+              <RHFAutocomplete
+                name="contract_type"
+                label={t('contract_type')}
+                options={TypeList}
+                getOptionLabel={(option) => t(option.name)}
+                isOptionEqualToValue={(option, value) => option.id === value}
+              />
+              {/* <Field.Text name="contract_type" label={t('contract_type')} /> */}
+              <RHFAutocomplete
+                name="status"
+                label={t('status')}
+                options={StatusList}
+                getOptionLabel={(option) => t(option.name)}
+                isOptionEqualToValue={(option, value) => option.id === value}
+              />
+              {/* <Field.Text name="status" label={t('status')} /> */}
               <Field.Text name="contract_duration" label={t('contract_duration')} />
               {/* <Field.Text name="role" label="Role" /> */}
               {/* <RHFAutocomplete
@@ -339,24 +365,23 @@ export function CompanyNewEditForm({ currentCompany }) {
               </Stack>
             </Stack> */}
           </Card>
-          {/* {!currentCompany && ( */}
-          <Card sx={{ p: 3 }}>
-            <CardHeader title={t('admin_details')} sx={{ mb: 5 }} />
-            <Divider sx={{ mb: 5 }} />
-            <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                sm: 'repeat(2, 1fr)',
-              }}
-            >
-              <Field.Text name="admin_name" label={t('admin_name')} />
-              <Field.Text name="admin_email" label={t('email')} />
-              <Field.Text name="admin_phone_number" label={t('phone_number')} />
-              <Field.Text name="admin_national_id" label={t('national_id')} />
-              {!currentCompany && (
+          {!currentCompany && (
+            <Card sx={{ p: 3 }}>
+              <CardHeader title={t('admin_details')} sx={{ mb: 5 }} />
+              <Divider sx={{ mb: 5 }} />
+              <Box
+                rowGap={3}
+                columnGap={2}
+                display="grid"
+                gridTemplateColumns={{
+                  xs: 'repeat(1, 1fr)',
+                  sm: 'repeat(2, 1fr)',
+                }}
+              >
+                <Field.Text name="admin_name" label={t('admin_name')} />
+                <Field.Text name="admin_email" label={t('email')} />
+                <Field.Text name="admin_phone_number" label={t('phone_number')} />
+                <Field.Text name="admin_national_id" label={t('national_id')} />
                 <Field.Text
                   name="admin_password"
                   label={t('password')}
@@ -375,10 +400,9 @@ export function CompanyNewEditForm({ currentCompany }) {
                     ),
                   }}
                 />
-              )}
-            </Box>
-          </Card>
-          {/* // )} */}
+              </Box>
+            </Card>
+          )}
           <Stack alignItems="flex-end" sx={{ mt: 3 }}>
             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
               {!currentCompany ? t('add_company') : t('save_changes')}

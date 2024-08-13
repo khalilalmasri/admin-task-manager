@@ -6,7 +6,7 @@ import { chipProps, FiltersBlock, FiltersResult } from 'src/components/filters-r
 
 // ----------------------------------------------------------------------
 
-export function TaskTableFiltersResult({ filters, onResetPage, totalResults, sx }) {
+export function StaffTableFiltersResult({ filters, onResetPage, totalResults, sx }) {
   const handleRemoveKeyword = useCallback(() => {
     onResetPage();
     filters.setState({ title: '' });

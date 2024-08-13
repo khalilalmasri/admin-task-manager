@@ -1,6 +1,6 @@
 import * as z from 'zod';
-import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { useMemo, useState, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import Box from '@mui/material/Box';
@@ -16,6 +16,7 @@ import { useRouter } from 'src/routes/hooks';
 import axios, { endpoints } from 'src/utils/axios';
 
 import { useTranslate } from 'src/locales';
+import { useGetCompanys } from 'src/actions/company';
 
 // import { Label } from 'src/components/label';
 import { toast } from 'src/components/snackbar';
@@ -25,27 +26,6 @@ import { TypeList, StatusList, PriorityList } from './project-data';
 
 // ----------------------------------------------------------------------
 
-// export const NewUserSchema = zod.object({
-
-//   name: zod.string().min(1, { message: 'Name is required!' }),
-//   email: zod
-//     .string()
-//     .min(1, { message: 'Email is required!' })
-//     .email({ message: 'Email must be a valid email address!' }),
-//   phone_number: zod.string().min(1, { message: 'phone_number number is required!' }),
-//   register_number: zod.string().min(1, { message: 'register_number number is required!' }),
-//   address: zod.string().min(1, { message: 'address is required!' }),
-//   // contract_duration: zod.number({ message: 'contract_duration is required!' }),
-//   contract_duration: zod.string(),
-//   status: zod.enum(['0', '1', '2', '3'], {
-//     errorMap: () => ({ message: 'يجب اختيار نوع العقد من القيم المتاحة' }),
-//   }),
-//   scope: zod.string().min(1, { message: 'scope is required!' }),
-//   // contract_type: zod.string({ message: 'contract_type is required!' }),
-//   contract_type: zod.enum(['1', '2', '3'], {
-//     errorMap: () => ({ message: 'يجب اختيار نوع العقد من القيم المتاحة' }),
-//   }),
-// });
 export const NewUserSchema = z.object({
   name: z.string().min(1, { message: 'اسم المشروع مطلوب' }),
   contract_duration: z.string().min(1, { message: 'مدة العقد يجب أن تكون رقماً موجباً' }),
@@ -53,8 +33,6 @@ export const NewUserSchema = z.object({
     id: z.string(),
     name: z.string(),
   }),
-  // start_date: z.any(),
-  // end_date: z.any(),
   start_date: z.union([z.string(), z.date()]),
   end_date: z.union([z.string(), z.date()]),
 
@@ -67,45 +45,40 @@ export const NewUserSchema = z.object({
     name: z.string(),
   }),
   desc: z.string().optional(),
+  company_id: z
+    .object({
+      id: z
+        .string()
+        .refine((val) => Array.from({ length: 10001 }, (_, i) => i.toString()).includes(val), {
+          message: 'يجب اختيار الصلاحية من القيم المتاحة',
+        }),
+      name: z.string(),
+    })
+    .nullable(),
 });
-
-// const StatusList = [
-//   { id: '0', name: 'active' },
-//   { id: '1', name: 'reject' },
-//   // { id: '2', name: 'company' },
-// ];
-// const TypeList = [
-//   { id: '0', name: 'type 1' },
-//   { id: '1', name: 'type 2' },
-//   { id: '2', name: 'type 3' },
-//   // { id: '2', name: 'company' },
-// ];
-// const PriorityList = [
-//   { id: '0', name: 'Priority' },
-//   { id: '1', name: 'unPriority' },
-// ];
 
 // ----------------------------------------------------------------------
 
 export function ProjectNewEditForm({ currentProject }) {
   const router = useRouter();
   const { t } = useTranslate();
-  // const [companyList, setCompanyList] = useState([]);
-  // const { companys } = useGetCompanys();
-  // useEffect(() => {
-  //   if (companys) setCompanyList(companys);
-  //   console.log('companyList', companyList);
-  //   console.log('companys', companys);
-  // }, [companys, companyList]);
-  // const companyOptions = companyList.map((company) => ({
-  //   id: company.id.toString(),
-  //   name: company.name,
-  // }));
-  // console.log('companyOptions', companyOptions);
+  const [companyList, setCompanyList] = useState([]);
+  const { companys } = useGetCompanys();
+  useEffect(() => {
+    if (companys) setCompanyList(companys);
+    console.log('companyList', companyList);
+    console.log('companys', companys);
+  }, [companys, companyList]);
+  const companyOptions = companyList.map((company) => ({
+    id: company.id.toString(),
+    name: company.name,
+  }));
   const defaultValues = useMemo(
     () => ({
+      desc: currentProject?.desc || '',
       name: currentProject?.name || '',
-      contract_duration: currentProject?.contract_duration || 0,
+      contract_duration: currentProject?.contract_duration.toString() || '',
+      company_id: currentProject?.company || null,
       status:
         StatusList.find((status) => status?.id === currentProject?.status?.toString()) || null,
       start_date: currentProject?.start_date || null,
@@ -114,20 +87,10 @@ export function ProjectNewEditForm({ currentProject }) {
       priority:
         PriorityList.find((priority) => priority?.id === currentProject?.priority?.toString()) ||
         null,
-
-      // role: RoleList.find((role) => role.id === currentProject?.role?.toString()) || null,
-      //   company_id: currentProject?.company_id
-      //     ? {
-      //         id: currentProject?.company_id.toString(),
-      //         name: companyList.find((company) => company.id === currentProject?.company_id)?.name,
-      //       }
-      //     : null,
     }),
     [currentProject]
   );
-  // console.log('Token:', localStorage.getItem(STORAGE_KEY));
-  // console.log('Endpoint:', endpoints.auth.signIn);
-  // const NewUserSchema = createNewProjectSchema(!!currentProject);
+
   const methods = useForm({
     mode: 'onSubmit',
     resolver: zodResolver(NewUserSchema),
@@ -159,9 +122,10 @@ export function ProjectNewEditForm({ currentProject }) {
         end_date: new Date(data.end_date).toISOString().split('T')[0],
         type: data.type.id,
         priority: data.priority.id,
+        company_id: data.company_id.id,
         desc: data.desc,
       };
-      console.log('after......sssss....data =>>>>>>');
+      console.log('after......sssss....data =>>>>>>', newData);
       let response;
       if (currentProject) {
         console.log('next............currentProject.............data =>>>>>>');
@@ -222,11 +186,9 @@ export function ProjectNewEditForm({ currentProject }) {
               <Field.Text name="name" label={t('project_name')} />
               <Field.Text name="desc" label={t('description')} />
               <Field.Text name="contract_duration" label={t('contract_duration')} />
-              {/* <Field.Text name="phone_number" label={t('phone_number')} /> */}
-              {/* <Field.Text name="national_id" label={t('national_id')} /> */}
 
               {/* <Field.Text name="company_id" label={t('company')} /> */}
-              {/* <Field.Text name="role" label={t('role')} /> */}
+
               <RHFAutocomplete
                 name="type"
                 label={t('type')}
@@ -238,7 +200,7 @@ export function ProjectNewEditForm({ currentProject }) {
                 name="priority"
                 label={t('priority')}
                 options={PriorityList}
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => t(option.name)}
                 isOptionEqualToValue={(option, value) => option.id === value.id}
               />
               <RHFAutocomplete
@@ -246,6 +208,13 @@ export function ProjectNewEditForm({ currentProject }) {
                 label={t('status')}
                 options={StatusList}
                 getOptionLabel={(option) => t(option.name)}
+                isOptionEqualToValue={(option, value) => option.id === value}
+              />
+              <RHFAutocomplete
+                name="company_id"
+                label={t('company')}
+                options={companyOptions}
+                getOptionLabel={(option) => option.name}
                 isOptionEqualToValue={(option, value) => option.id === value}
               />
             </Box>

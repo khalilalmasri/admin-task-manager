@@ -10,7 +10,7 @@ import { usePopover, CustomPopover } from 'src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 
-export function TaskTableToolbar({ filters, options, onResetPage }) {
+export function StaffTableToolbar({ filters, options, onResetPage }) {
   const popover = usePopover();
 
   const handleFilterName = useCallback(

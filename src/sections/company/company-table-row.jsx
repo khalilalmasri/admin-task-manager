@@ -61,13 +61,13 @@ export function UserTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
           <Label
             variant="soft"
             color={
-              (row.status === 1 && 'success') ||
-              (row.status === 'pending' && 'warning') ||
-              (row.status === 'rejected' && 'error') ||
-              'default'
+              (row.status === 1 && 'default') ||
+              // (row.status === 'pending' && 'warning') ||
+              // (row.status === 'rejected' && 'error') ||
+              'success'
             }
           >
-            {row.status === 1 ? t('active') : t('rejected')}
+            {row.status === 1 ? t('rejected') : t('active')}
           </Label>
         </TableCell>
 

@@ -107,7 +107,7 @@ export function TaskNewEditForm({ currentTask }) {
     () => ({
       title: currentTask?.title || '',
       desc: currentTask?.desc || '',
-      duration: currentTask?.duration || 0,
+      duration: currentTask?.duration.toString() || '',
       status: StatusList.find((status) => status?.id === currentTask?.status?.toString()) || null,
       start_date: currentTask?.start_date || null,
       end_date: currentTask?.end_date || null,
@@ -116,8 +116,8 @@ export function TaskNewEditForm({ currentTask }) {
         null,
       priority:
         PriorityList.find((priority) => priority?.id === currentTask?.priority?.toString()) || null,
-      project_id: currentTask?.project_id,
-      user_id: currentTask?.user_id,
+      project_id: currentTask?.project,
+      user_id: currentTask?.user,
       // role: RoleList.find((role) => role.id === currentTask?.role?.toString()) || null,
       //   company_id: currentTask?.company_id
       //     ? {
@@ -160,7 +160,7 @@ export function TaskNewEditForm({ currentTask }) {
         project_id: data.project_id.id,
         user_id: data.user_id.id,
         status: data.status.id,
-        duration: data.duration,
+        duration: data.duration.toString(),
         duration_type: data.duration_type.id,
         priority: data.priority.id,
       };

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { z as zod } from 'zod';
 import { toast } from 'sonner';
 import { useMemo } from 'react';
@@ -13,15 +14,16 @@ import { useRouter } from 'src/routes/hooks';
 
 import { useBoolean } from 'src/hooks/use-boolean';
 
+import { endpoints } from 'src/utils/axios';
+
 import { useTranslate } from 'src/locales';
+// import { CONFIG } from 'src/config-global';
 
 import { Form } from 'src/components/hook-form';
 
-import { InvoiceNewEditDetails } from './invoice-new-edit-details';
-// import { InvoiceNewEditAddress } from './invoice-new-edit-address';
-// import { InvoiceNewEditStatusDate } from './invoice-new-edit-status-date';
+import { StaffNewEditDetails } from './staff-new-edit-details';
 
-export const NewInvoiceSchema = zod.object({
+export const NewStaffSchema = zod.object({
   items: zod.array(zod.object({})).optional(),
 });
 
@@ -46,7 +48,7 @@ function calculateTimeDifference(startTime, endTime) {
   // return { hours, minutes };
   return `${hours}س:${minutes}د`;
 }
-export function InvoiceNewEditForm({ currentInvoice }) {
+export function StaffNewEditForm({ currentStaff }) {
   const router = useRouter();
   const { t } = useTranslate();
   const loadingSave = useBoolean();
@@ -55,105 +57,67 @@ export function InvoiceNewEditForm({ currentInvoice }) {
 
   const defaultValues = useMemo(
     () => ({
-      items: currentInvoice?.items || [
+      items: currentStaff?.items || [
         {
           user_id: '',
-          // start_time: new Date().setHours(8, 0, 0, 0),
           start_time: formattedStartDate,
           end_time: formattedEndDate,
           task_id: '',
           duration: calculateTimeDifference(formattedStartDate, formattedEndDate),
-          // duration: '',
         },
       ],
     }),
-    [currentInvoice]
+    [currentStaff]
   );
-
   const methods = useForm({
     mode: 'all',
-    resolver: zodResolver(NewInvoiceSchema),
+    resolver: zodResolver(NewStaffSchema),
     defaultValues,
   });
-  console.log('dataout....................', methods.getValues());
   const {
     reset,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
+
+  const token = sessionStorage.getItem('jwt_access_token');
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      // console.log('data =>>>>>>', data);
       const newData = {
         items: methods.getValues().items,
       };
-      // console.log('after......sssss....data =>>>>>>');
+      const axiosInstance = axios.create({
+        baseURL: 'https://todo.int-vision.com',
+      });
+      const response = await axiosInstance.post(endpoints.staff.create, newData, {
+        // followRedirects: true,
+        headers,
+      });
 
-      const existingDataString = localStorage.getItem('taskData');
-      const existingData = existingDataString ? JSON.parse(existingDataString) : { items: [] };
-
-      // Append new items to existing items
-      existingData.items = [...existingData.items, ...newData.items];
-
-      // Save updated data back to local storage
-      localStorage.setItem('taskData', JSON.stringify(existingData));
-      // const response = await axios.post(endpoints.task.create, newData);
-      // console.log('next.........................data =>>>>>>');
       reset();
 
-      // if (response.status) {
-      toast('update_success');
-      router.push(paths.dashboard.staff.list);
-      // } else {
-      // toast(response.statusText);
-      // console.log(response.statusText);
-      // }
+      if (response.status) {
+        toast('update_success');
+        router.push(paths.dashboard.staff.list);
+      } else {
+        toast(response.statusText);
+        console.log(response.statusText);
+      }
     } catch (error) {
       console.error(error);
-      // toast(error?.data);
+
       toast('some thing error');
-      // setErro(typeof error === 'string' ? error : error.message);
     }
   });
-  // const handleSaveAsDraft = handleSubmit(async (data) => {
-  //   loadingSave.onTrue();
-
-  //   try {
-  //     await new Promise((resolve) => setTimeout(resolve, 500));
-  //     reset();
-  //     loadingSave.onFalse();
-  //     router.push(paths.dashboard.invoice.root);
-  //     console.info('DATA', JSON.stringify(data, null, 2));
-  //   } catch (error) {
-  //     console.error(error);
-  //     loadingSave.onFalse();
-  //   }
-  // });
-
-  // const handleCreateAndSend = handleSubmit(async (data) => {
-  //   loadingSend.onTrue();
-
-  //   try {
-  //     await new Promise((resolve) => setTimeout(resolve, 500));
-  //     reset();
-  //     loadingSend.onFalse();
-  //     router.push(paths.dashboard.invoice.root);
-  //     console.info('DATA', JSON.stringify(data, null, 2));
-  //   } catch (error) {
-  //     console.error(error);
-  //     loadingSend.onFalse();
-  //   }
-  // });
 
   return (
     <Form methods={methods}>
       <Card>
-        {/* <InvoiceNewEditAddress /> */}
-
-        {/* <InvoiceNewEditStatusDate /> */}
-
-        <InvoiceNewEditDetails />
+        <StaffNewEditDetails />
       </Card>
 
       <Stack justifyContent="flex-end" direction="row" spacing={2} sx={{ mt: 3 }}>
@@ -174,7 +138,7 @@ export function InvoiceNewEditForm({ currentInvoice }) {
           // onClick={handleCreateAndSend}
           onClick={onSubmit}
         >
-          {currentInvoice ? t('Update') : t('Create')}
+          {currentStaff ? t('update') : t('create')}
         </LoadingButton>
       </Stack>
     </Form>

@@ -17,7 +17,7 @@ import { Field } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
 
-export function InvoiceNewEditDetails() {
+export function StaffNewEditDetails() {
   const { control, setValue, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({ control, name: 'items' });
   const { users } = useGetUsers();
@@ -59,10 +59,6 @@ export function InvoiceNewEditDetails() {
   const startTime = formattedStartDate;
   const endTime = formattedEndDate;
 
-  // const { hours, minutes } = calculateTimeDifference(startTime, endTime);
-  // console.log(`الفرق: ${hours} ساعات و ${minutes} دقيقة`);
-  // console.log(`${hours}:${minutes}`);
-  // console.log(formattedDate);
   const handleAdd = () => {
     append({
       user_id: '',
@@ -72,12 +68,8 @@ export function InvoiceNewEditDetails() {
       duration: calculateTimeDifference(formattedStartDate, formattedEndDate),
     });
   };
-  console.log('values', values.items[0].duration);
   const handleRemove = (index) => {
     remove(index);
-  };
-  const handleDurationChange = (event, index) => {
-    setValue(`items[${index}].duration`, values.items[index].duration);
   };
   return (
     <Box sx={{ p: 3 }}>
@@ -92,7 +84,7 @@ export function InvoiceNewEditDetails() {
               <Field.Select
                 name={`items[${index}].user_id`}
                 size="small"
-                label=" أسم الموظف"
+                label={t('user_name')}
                 InputLabelProps={{ shrink: true }}
                 sx={{ maxWidth: { md: 180 } }}
               >
@@ -107,7 +99,7 @@ export function InvoiceNewEditDetails() {
                 format="hh:mm a "
                 openTo="hours"
                 name={`items[${index}].start_time`}
-                label="وقت الدخول"
+                label={t('start_time')}
                 sx={{
                   maxWidth: { md: 180 },
                   '& .MuiInputBase-root': { height: '40px' },
@@ -119,7 +111,7 @@ export function InvoiceNewEditDetails() {
                 format="hh:mm a "
                 openTo="hours"
                 name={`items[${index}].end_time`}
-                label="وقت الخروج"
+                label={t('end_time')}
                 InputLabelProps={{ shrink: true }}
                 sx={{
                   maxWidth: { md: 180 },
@@ -180,7 +172,7 @@ export function InvoiceNewEditDetails() {
           onClick={handleAdd}
           sx={{ flexShrink: 0 }}
         >
-          اضافة سطر
+          {t('add_row')}
         </Button>
       </Stack>
     </Box>

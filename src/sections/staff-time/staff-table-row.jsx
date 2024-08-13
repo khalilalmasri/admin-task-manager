@@ -1,3 +1,5 @@
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
@@ -17,7 +19,7 @@ import { useTranslate } from 'src/locales';
 
 import { useState, useEffect } from 'react';
 
-import { Link, Avatar, Typography, ListItemText } from '@mui/material';
+import { Avatar, Typography, ListItemText } from '@mui/material';
 
 import { useGetUsers } from 'src/actions/user';
 import { useGetTasks } from 'src/actions/task';
@@ -42,7 +44,7 @@ function calculateTimeDifference(startTime, endTime) {
   // return { hours, minutes };
   return `${hours}س:${minutes}د`;
 }
-export function TaskTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
+export function StaffTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
   const { t } = useTranslate();
   const popover = usePopover();
@@ -81,28 +83,22 @@ export function TaskTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
         <TableCell padding="checkbox">
           <Checkbox id={row.id} checked={selected} onClick={onSelectRow} />
         </TableCell>
-        <Stack spacing={2} direction="row" alignItems="center">
-          <Avatar alt={row.invoiceTo?.name}>{row.invoiceTo?.name.charAt(0).toUpperCase()}</Avatar>
+        <TableCell>
+          <Stack spacing={2} direction="row" alignItems="center">
+            <Avatar alt={getUserNameById(row?.user_id)} src={getUserNameById(row?.user_id)} />
 
-          <ListItemText
-            disableTypography
-            primary={
-              <Typography variant="body2" noWrap>
-                {/* {getNameById(row?.invoiceTo?.name, usersData)} */}
-              </Typography>
-            }
-            secondary={
-              <Link
-                noWrap
-                variant="body2"
-                // onClick={onViewRow}
-                sx={{ color: 'text.disabled', cursor: 'pointer' }}
-              >
-                {getUserNameById(row?.user_id)}
-              </Link>
-            }
-          />
-        </Stack>
+            <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
+              {/* <Link color="inherit" onClick={onEditRow} sx={{ cursor: 'pointer' }}>
+              {getUserNameById(row?.user_id)}
+              </Link> */}
+              <Box component="span" sx={{ color: 'text.inherit' }}>
+              {getUserNameById(row?.user_id)}
+              </Box>
+            </Stack>
+          </Stack>
+        </TableCell>
+
+
 
         <TableCell>
           <ListItemText
@@ -167,7 +163,7 @@ export function TaskTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
             {t('delete')}
           </MenuItem>
 
-          <MenuItem
+          {/* <MenuItem
             onClick={() => {
               onEditRow();
               popover.onClose();
@@ -175,7 +171,7 @@ export function TaskTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRo
           >
             <Iconify icon="solar:pen-bold" />
             {t('edit')}
-          </MenuItem>
+          </MenuItem> */}
         </MenuList>
       </CustomPopover>
 
