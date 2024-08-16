@@ -10,7 +10,8 @@ import { Iconify } from '../../iconify';
 export function SingleFilePreview({ file }) {
   const fileName = typeof file === 'string' ? file : file.name;
 
-  const previewUrl = typeof file === 'string' ? file : URL.createObjectURL(file);
+  // const previewUrl = typeof file === 'string' ? file : URL.createObjectURL(file);
+  const previewUrl = '/assets/csv.png';
 
   return (
     <Box
@@ -31,7 +32,7 @@ export function SingleFilePreview({ file }) {
           width: 1,
           height: 1,
           borderRadius: 1,
-          objectFit: 'cover',
+          objectFit: 'contain',
         }}
       />
     </Box>

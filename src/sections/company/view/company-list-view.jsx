@@ -71,7 +71,7 @@ export function CompanyListView() {
 
   const TABLE_HEAD = [
     { id: 'name', label: t('company_name') },
-    { id: 'phoneNumber', label: t('phone_number'), width: 180 },
+    { id: 'phone_number', label: t('phone_number'), width: 180 },
     { id: 'email', label: t('email'), width: 220 },
     { id: 'address', label: t('address'), width: 180 },
     { id: 'status', label: t('status'), width: 100 },
@@ -133,8 +133,25 @@ export function CompanyListView() {
     },
     [confirm, table, tableData, t]
   );
+  // console.log('table.selected', ...table.selected);
   const handleDeleteRows = useCallback(() => {
-    const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
+    // async function deleteRows() {
+      // const response = await axios.delete(`${endpoints.company.delete}/${table.selected}`);
+      // if (response.status) {
+        // const deleteRowss = tableData.filter((row) => !table.selected.includes(row.id));
+        const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
+        // setTableData(deleteRowss);
+        // table.onUpdatePageDeleteRows({
+          // totalRowsInPage: dataInPage.length,
+          // totalRowsFiltered: dataFiltered.length,
+        // });
+        // toast.success(t('delete_success'));
+      // } else {
+        // toast(response.message);
+      // }
+    // }
+    // const deleteRows = tableData.filter((row) => !table.selected.includes(row.id));
+    // const response = await axios.delete(`${endpoints.company.delete}/${id}`);
 
     toast.success(t('delete_success'));
 
@@ -341,7 +358,7 @@ export function CompanyListView() {
 function applyFilter({ inputData, comparator, filters }) {
   const { name, status, role } = filters;
 
-  const stabilizedThis = inputData.map((el, index) => [el, index]);
+  const stabilizedThis = inputData?.map((el, index) => [el, index]);
 
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
