@@ -43,6 +43,7 @@ export function StaffNewEditDetails() {
   const EndDate = new Date();
   EndDate.setHours(17, 0, 0, 0);
   const formattedEndDate = `${EndDate.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: 'Asia/Riyadh' }).replace(', ', 'T')}+03:00`;
+  // eslint-disable-next-line consistent-return
   function calculateTimeDifference(startTime, endTime) {
     const start = new Date(startTime);
     const end = new Date(endTime);
@@ -54,7 +55,12 @@ export function StaffNewEditDetails() {
     const minutes = Math.floor(diffInMinutes % 60);
 
     // return { hours, minutes };
-    return `${hours}س:${minutes}د`;
+    if (hours >= 0 && minutes >= 0) {
+      return `${hours}س:${minutes}د`;
+    }
+    if (hours <= 0 || minutes <= 0) {
+      return 'غير مقبول';
+    }
   }
   const startTime = formattedStartDate;
   const endTime = formattedEndDate;
@@ -94,6 +100,17 @@ export function StaffNewEditDetails() {
                   </MenuItem>
                 ))}
               </Field.Select>
+              <Field.DatePicker
+                type="datetime"
+                format="DD-MM-YYYY"
+                name={`items[${index}].date`}
+                label={t('date')}
+                sx={{
+                  maxWidth: { md: 200 },
+                  '& .MuiInputBase-root': { height: '40px' },
+                  '& .MuiInputBase-input': { padding: '10px 14px' },
+                }}
+              />
               <Field.MobileDateTimePicker
                 type="datetime"
                 format="hh:mm a "
@@ -129,7 +146,7 @@ export function StaffNewEditDetails() {
                   values.items[index]?.end_time
                 )}
                 sx={{
-                  maxWidth: { md: 80 },
+                  maxWidth: { md: 100 },
                   '& .MuiInputBase-root': { height: '40px' },
                   '& .MuiInputBase-input': { padding: '10px 14px' },
                 }}

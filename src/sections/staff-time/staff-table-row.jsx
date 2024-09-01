@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
@@ -19,7 +18,7 @@ import { useTranslate } from 'src/locales';
 
 import { useState, useEffect } from 'react';
 
-import { Avatar, Typography, ListItemText } from '@mui/material';
+import { Avatar, ListItemText } from '@mui/material';
 
 import { useGetUsers } from 'src/actions/user';
 import { useGetTasks } from 'src/actions/task';
@@ -76,7 +75,7 @@ export function StaffTableRow({ row, selected, onEditRow, onSelectRow, onDeleteR
     }
     return text;
   }
-
+  // console.log('row', row?.user.name === "talal");
   return (
     <>
       <TableRow hover selected={selected} aria-checked={selected} tabIndex={-1}>
@@ -85,20 +84,15 @@ export function StaffTableRow({ row, selected, onEditRow, onSelectRow, onDeleteR
         </TableCell>
         <TableCell>
           <Stack spacing={2} direction="row" alignItems="center">
-            <Avatar alt={getUserNameById(row?.user_id)} src={getUserNameById(row?.user_id)} />
+            <Avatar alt={row?.user.name} src={row?.user.name} />
 
             <Stack sx={{ typography: 'body2', flex: '1 1 auto', alignItems: 'flex-start' }}>
-              {/* <Link color="inherit" onClick={onEditRow} sx={{ cursor: 'pointer' }}>
-              {getUserNameById(row?.user_id)}
-              </Link> */}
               <Box component="span" sx={{ color: 'text.inherit' }}>
-              {getUserNameById(row?.user_id)}
+                {getUserNameById(row?.user_id)}
               </Box>
             </Stack>
           </Stack>
         </TableCell>
-
-
 
         <TableCell>
           <ListItemText

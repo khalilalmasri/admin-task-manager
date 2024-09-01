@@ -79,25 +79,41 @@ export function StaffListView() {
     { id: 'end_time', label: t('end_time') },
     { id: 'duration', label: t('duration') },
     { id: 'task_id', label: t('task_name') },
-
   ];
 
   const [tableData, setTableData] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
   const filters = useSetState({ name: '', role: [], status: 'all' });
   const { staffs, staffsEmpty, staffsLoading } = useGetStaffs();
-  console.log('staffs', staffs);
+  const [searchresult, setSearchResult] = useState([]);
+
   useEffect(() => {
-    if (!staffsEmpty || !staffsLoading || staffs) {
-      setTableData(staffs);
-      console.log('useeffect');
+    if (staffs) {
+      setOriginalData(staffs);
     }
-  }, [staffsEmpty, staffs, staffsLoading]);
+  }, [staffs]);
+  useEffect(() => {
+    if (originalData.length > 0) {
+      setSearchResult(
+        originalData.filter((item) => item.user.name.toLowerCase().includes(filters.state.name))
+      );
+    }
+  }, [originalData, filters.state.name]);
+
+  useEffect(() => {
+    if (searchresult) {
+      setTableData(searchresult);
+    }
+  }, [searchresult]);
+
   const dataFiltered = applyFilter({
     inputData: tableData,
     comparator: getComparator(table.order, table.orderBy),
     filters: filters.state,
   });
+  //-------------
 
+  //-------------
   const dataInPage = rowInPage(dataFiltered, table.page, table.rowsPerPage);
 
   const canReset =
@@ -166,6 +182,13 @@ export function StaffListView() {
     },
     [filters, table]
   );
+  // console.log('filters', filters.state.name);
+  // console.log('findfindfindfindtableData', tableData.find((item) => item.user.name === "talal"));
+  // console.log('>>>>>>>>>>>>>>tableData', tableData.filter((item) => item.user.name.toLowerCase().includes(filters.state.name)));
+  // console.log('>>>>>>>>>>>>>>tableData', tableData);
+  // console.log('>>>>>>>>>>>>>>searchresult', searchresult);
+  // console.log('>>>>>>>>>>>>>>originalData', originalData);
+  // console.log('includesincludes', tableData.includes(tableData.find((item) => item.user.name === "ta")));
 
   return (
     <>
@@ -372,4 +395,3 @@ function applyFilter({ inputData, comparator, filters }) {
 
   return inputData;
 }
-
