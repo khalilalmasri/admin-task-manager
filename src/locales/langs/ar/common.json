@@ -83,6 +83,7 @@
   "create": "اضافة",
   "add_row": " إضافة سطر",
   "edit_project": " تعديل بيانات المشروع",
+  "position" : "المنصب",
 
   "demo": {
     "title": "Arabic",

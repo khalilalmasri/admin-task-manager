@@ -78,8 +78,20 @@ export const NewTaskSchema = z.object({
     id: z.any(),
     name: z.string(),
   }),
+  position_id: z.z.object({
+    id: z.any(),
+    name: z.string(),
+  }),
 });
 
+const PositionList = [
+  { id: '0', name: 'hr' },
+  { id: '1', name: 'sales' },
+  { id: '2', name: 'account' },
+  { id: '3', name: 'manager' },
+  { id: '4', name: 'reception' },
+  { id: '5', name: 'technician' },
+];
 // ----------------------------------------------------------------------
 
 export function TaskNewEditForm({ currentTask }) {
@@ -118,6 +130,7 @@ export function TaskNewEditForm({ currentTask }) {
         PriorityList.find((priority) => priority?.id === currentTask?.priority?.toString()) || null,
       project_id: currentTask?.project,
       user_id: currentTask?.user,
+      position_id: currentTask?.position || null,
       // role: RoleList.find((role) => role.id === currentTask?.role?.toString()) || null,
       //   company_id: currentTask?.company_id
       //     ? {
@@ -159,6 +172,7 @@ export function TaskNewEditForm({ currentTask }) {
         end_date: new Date(data.end_date).toISOString().split('T')[0],
         project_id: data.project_id.id,
         user_id: data.user_id.id,
+        position_id: data.position_id.id,
         status: data.status.id,
         duration: data.duration.toString(),
         duration_type: data.duration_type.id,
@@ -260,6 +274,13 @@ export function TaskNewEditForm({ currentTask }) {
                 name="user_id"
                 label={t('user_name')}
                 options={userList}
+                getOptionLabel={(option) => t(option.name)}
+                isOptionEqualToValue={(option, value) => option.id === value}
+              />
+              <RHFAutocomplete
+                name="position_id"
+                label={t('position')}
+                options={PositionList}
                 getOptionLabel={(option) => t(option.name)}
                 isOptionEqualToValue={(option, value) => option.id === value}
               />

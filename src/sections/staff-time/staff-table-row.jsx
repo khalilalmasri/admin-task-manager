@@ -30,6 +30,7 @@ import { usePopover, CustomPopover } from 'src/components/custom-popover';
 // import {  StatusList, PriorityList, DurationTypeList } from '../../sections/tasks/task-data';
 
 // ----------------------------------------------------------------------
+// eslint-disable-next-line consistent-return
 function calculateTimeDifference(startTime, endTime) {
   const start = new Date(startTime);
   const end = new Date(endTime);
@@ -41,7 +42,13 @@ function calculateTimeDifference(startTime, endTime) {
   const minutes = Math.floor(diffInMinutes % 60);
 
   // return { hours, minutes };
-  return `${hours}س:${minutes}د`;
+  // return `${hours}س:${minutes}د`;
+  if (hours >= 0 && minutes >= 0) {
+    return `${hours}س:${minutes}د`;
+  }
+  if (hours <= 0 || minutes <= 0) {
+    return 'يرجى التصحيح';
+  }
 }
 export function StaffTableRow({ row, selected, onEditRow, onSelectRow, onDeleteRow }) {
   const confirm = useBoolean();
@@ -112,7 +119,7 @@ export function StaffTableRow({ row, selected, onEditRow, onSelectRow, onDeleteR
           />
         </TableCell>
         {/* <TableCell>{row?.duration}</TableCell> */}
-        <TableCell align="center">
+        <TableCell align="center" sx={{ color: `${calculateTimeDifference(row?.start_time, row?.end_time) === "يرجى التصحيح" ? 'red' : 'inherit' }` }}>
           {' '}
           {calculateTimeDifference(row?.start_time, row?.end_time)}
         </TableCell>

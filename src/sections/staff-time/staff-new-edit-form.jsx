@@ -193,6 +193,12 @@ export function StaffNewEditForm({ currentStaff }) {
   const applyValue = () => {
     methods.setValue('items', newCombinedArray);
   };
+  const filterEmploysbyCompanyId = (companyId) =>
+    usersData.filter((employ) => employ.company_id === companyId);
+  console.log(
+    'filterEmploysbyCompanyId............',
+    filterEmploysbyCompanyId(methods.getValues().company).length
+  );
 
   const token = sessionStorage.getItem('jwt_access_token');
 
@@ -240,6 +246,7 @@ export function StaffNewEditForm({ currentStaff }) {
           >
             <Field.Select
               name="company"
+              disabled
               size="small"
               label={t('company')}
               InputLabelProps={{ shrink: true }}
@@ -256,6 +263,7 @@ export function StaffNewEditForm({ currentStaff }) {
               name="employs"
               label="الموظفين"
               options={employsShowArray}
+              // options={filterEmploysbyCompanyId(methods.getValues().company)}
             />{' '}
             <Field.DatePicker
               type="datetime"

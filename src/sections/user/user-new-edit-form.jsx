@@ -54,13 +54,16 @@ export const createNewUserSchema = (isEditMode) =>
     //     name: zod.string(),
     //   })
     //   .nullable(),
-    company_id: zod
+    company_id: zod.object({
+      id: zod.any(),
+      // id: zod.string(),
+      // .refine((val) => Array.from({ length: 10001 }, (_, i) => i.toString()).includes(val), {
+      // message: 'يجب اختيار الصلاحية من القيم المتاحة',
+      name: zod.string(),
+    }),
+    position_id: zod
       .object({
-        id: zod
-          .string()
-          .refine((val) => Array.from({ length: 10001 }, (_, i) => i.toString()).includes(val), {
-            message: 'يجب اختيار الصلاحية من القيم المتاحة',
-          }),
+        id: zod.any(),
         name: zod.string(),
       })
       .nullable(),
@@ -69,6 +72,14 @@ const RoleList = [
   { id: '0', name: 'user' },
   { id: '1', name: 'admin' },
   { id: '2', name: 'company' },
+];
+const PositionList = [
+  { id: '0', name: 'hr' },
+  { id: '1', name: 'sales' },
+  { id: '2', name: 'account' },
+  { id: '3', name: 'manager' },
+  { id: '4', name: 'reception' },
+  { id: '5', name: 'technician' },
 ];
 
 // ----------------------------------------------------------------------
@@ -81,14 +92,14 @@ export function UserNewEditForm({ currentUser }) {
   const { companys } = useGetCompanys();
   useEffect(() => {
     if (companys) setCompanyList(companys);
-    console.log('companyList', companyList);
-    console.log('companys', companys);
+    // console.log('companyList', companyList);
+    // console.log('companys', companys);
   }, [companys, companyList]);
   const companyOptions = companyList.map((company) => ({
     id: company.id.toString(),
     name: company.name,
   }));
-  console.log('companyOptions', companyOptions);
+  // console.log('companyOptions', companyOptions);
   const defaultValues = useMemo(
     () => ({
       name: currentUser?.name || '',
@@ -98,6 +109,7 @@ export function UserNewEditForm({ currentUser }) {
       password: currentUser?.password || '',
       // role: RoleList.find((role) => role.id === currentUser?.role?.toString()) || null,
       company_id: currentUser?.company || null,
+      position_id: currentUser?.position || null,
       // ? {
       //     id: currentUser?.company_id.toString(),
       //     name: companyList.find((company) => company.id === currentUser?.company_id)?.name,
@@ -114,7 +126,7 @@ export function UserNewEditForm({ currentUser }) {
     resolver: zodResolver(NewUserSchema),
     defaultValues,
   });
-  console.log('defaultValues', defaultValues);
+  // console.log('defaultValues', defaultValues);
   const {
     reset,
     watch,
@@ -124,7 +136,7 @@ export function UserNewEditForm({ currentUser }) {
   } = methods;
 
   const values = watch();
-  // console.log('Values', values);
+  console.log('Values', values);
   const onSubmit = handleSubmit(async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
@@ -138,6 +150,7 @@ export function UserNewEditForm({ currentUser }) {
         password_confirmation: data.password,
         // role: data.role.id,
         company_id: data.company_id.id,
+        position_id: data.position_id.id,
         // company_id: parseInt(data.company_id.id, 10),
       };
       const currentData = {
@@ -148,6 +161,7 @@ export function UserNewEditForm({ currentUser }) {
         // role: data.role.id,
         // company_id: parseInt(data.company_id, 10),
         company_id: data.company_id.id,
+        position_id: data?.position_id.id,
       };
       let response;
       if (currentUser) {
@@ -321,6 +335,13 @@ export function UserNewEditForm({ currentUser }) {
                 name="company_id"
                 label={t('company')}
                 options={companyOptions}
+                getOptionLabel={(option) => option.name}
+                isOptionEqualToValue={(option, value) => option.id === value}
+              />
+              <RHFAutocomplete
+                name="position_id"
+                label={t('position')}
+                options={PositionList}
                 getOptionLabel={(option) => option.name}
                 isOptionEqualToValue={(option, value) => option.id === value}
               />
